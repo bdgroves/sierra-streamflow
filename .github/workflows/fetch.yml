@@ -1,0 +1,41 @@
+name: Fetch Sierra Streamflow Data
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # every hour on the hour
+  workflow_dispatch:        # manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch USGS data
+        run: python scripts/fetch.py
+
+      - name: Check for data changes
+        id: diff
+        run: |
+          git diff --quiet data/processed/streamflow.json \
+            && echo "changed=false" >> $GITHUB_OUTPUT \
+            || echo "changed=true"  >> $GITHUB_OUTPUT
+
+      - name: Commit and push (only if data changed)
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/processed/streamflow.json
+          git commit -m "data: update streamflow $(date -u '+%Y-%m-%dT%H:%MZ')"
+          git push

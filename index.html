@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sierra Streamflow Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
+:root {
+  --bark:      #2C1F0E;
+  --bark-mid:  #3D2B12;
+  --bark-lt:   #5A3E22;
+  --parchment: #F5EDD8;
+  --cream:     #FAF4E8;
+  --sand:      #D4B896;
+  --sage:      #7A8C6E;
+  --sage-dk:   #4E5C42;
+  --river:     #4A7C8E;
+  --river-lt:  #6BAFC5;
+  --river-glow:#A8D4E0;
+  --moss:      #5C7A4E;
+  --ochre:     #C4873A;
+  --ochre-lt:  #E0A85A;
+  --rust:      #A84B2A;
+  --alert-red: #C23B22;
+  --snow:      #EDF4F7;
+  --text-main: #1C1209;
+  --text-mid:  #4A3520;
+  --text-muted:#7A6248;
+  --border:    rgba(90,62,34,0.18);
+  --shadow:    0 4px 32px rgba(28,18,9,0.18);
+}
+
+/* ── Reset & base ──────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bark);
+  color: var(--text-main);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle bark-texture overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 120px,
+      rgba(255,255,255,0.012) 120px, rgba(255,255,255,0.012) 121px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px, transparent 80px,
+      rgba(0,0,0,0.04) 80px, rgba(0,0,0,0.04) 81px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Page shell ────────────────────────────────────────────────────────────── */
+.page {
+  position: relative; z-index: 1;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+.site-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 48px 0 36px;
+  border-bottom: 2px solid var(--bark-lt);
+  flex-wrap: wrap;
+}
+
+.header-left {}
+
+.header-eyebrow {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ochre-lt);
+  margin-bottom: 10px;
+}
+
+.header-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(32px, 5vw, 58px);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--parchment);
+  letter-spacing: -0.01em;
+}
+
+.header-title span {
+  color: var(--river-lt);
+}
+
+.header-subtitle {
+  margin-top: 10px;
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--sand);
+  font-weight: 300;
+}
+
+.header-right {
+  text-align: right;
+}
+
+.update-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--bark-lt);
+  border-radius: 4px;
+  padding: 10px 16px;
+}
+
+.update-dot {
+  width: 7px; height: 7px;
+  background: var(--moss);
+  border-radius: 50%;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.update-text {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--sand);
+}
+
+/* ── River group headers ───────────────────────────────────────────────────── */
+.river-section {
+  margin-top: 52px;
+}
+
+.river-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.river-label h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--parchment);
+  letter-spacing: 0.01em;
+}
+
+.river-label-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--bark-lt), transparent);
+}
+
+.river-icon {
+  font-size: 18px;
+}
+
+/* ── Station grid ──────────────────────────────────────────────────────────── */
+.station-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+/* ── Station card ──────────────────────────────────────────────────────────── */
+.card {
+  background: var(--parchment);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(28,18,9,0.28);
+}
+
+/* Status stripe across top */
+.card-stripe {
+  height: 4px;
+  background: var(--sage);
+}
+
+.card-stripe.NORMAL   { background: var(--sage); }
+.card-stripe.ELEVATED { background: var(--ochre); }
+.card-stripe.HIGH     { background: var(--rust); }
+.card-stripe.FLOOD    { background: var(--alert-red); }
+.card-stripe.error,
+.card-stripe.no_data  { background: var(--text-muted); }
+
+.card-body {
+  padding: 20px 22px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Station name row */
+.station-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.station-name {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  line-height: 1.3;
+}
+
+.station-id {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* Big flow number */
+.flow-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.flow-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--bark);
+}
+
+.flow-unit {
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+.flow-trend {
+  font-size: 20px;
+  margin-left: auto;
+  line-height: 1;
+}
+
+/* Status pill */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.status-pill.NORMAL   { background: rgba(122,140,110,0.18); color: var(--sage-dk); }
+.status-pill.ELEVATED { background: rgba(196,135,58,0.18);  color: #7A5010; }
+.status-pill.HIGH     { background: rgba(168,75,42,0.18);   color: var(--rust); }
+.status-pill.FLOOD    { background: rgba(194,59,34,0.18);   color: var(--alert-red); }
+.status-pill.error,
+.status-pill.no_data  { background: rgba(122,98,72,0.15);   color: var(--text-muted); }
+
+/* Metrics strip */
+.metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.metric {
+  padding: 8px 10px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+
+.metric:last-child { border-right: none; }
+
+.metric-label {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.metric-value {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.metric-value.pos { color: var(--rust); }
+.metric-value.neg { color: var(--river); }
+.metric-value.na  { color: var(--text-muted); font-weight: 400; }
+
+/* Sparkline chart */
+.sparkline-wrap {
+  height: 72px;
+  position: relative;
+}
+
+/* Card footer */
+.card-footer {
+  padding: 10px 22px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+}
+
+.footer-time {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.footer-link {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--river);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.footer-link:hover { border-color: var(--river); }
+
+/* ── Summary bar ───────────────────────────────────────────────────────────── */
+.summary-bar {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 24px 28px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--bark-lt);
+  border-radius: 4px;
+  margin-top: 48px;
+}
+
+.summary-stat {}
+
+.summary-stat-label {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ochre-lt);
+  margin-bottom: 4px;
+}
+
+.summary-stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--parchment);
+  line-height: 1;
+}
+
+.summary-stat-sub {
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--sand);
+  font-weight: 300;
+  margin-top: 3px;
+}
+
+/* ── Error / loading ───────────────────────────────────────────────────────── */
+.loading-state {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--sand);
+  font-style: italic;
+  font-size: 16px;
+}
+
+.error-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--bark-lt);
+  border-radius: 6px;
+  padding: 24px;
+  color: var(--sand);
+  font-style: italic;
+  font-size: 14px;
+  grid-column: 1/-1;
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────────── */
+.site-footer {
+  margin-top: 72px;
+  padding-top: 28px;
+  border-top: 1px solid var(--bark-lt);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-text {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  line-height: 1.8;
+}
+
+.footer-text a {
+  color: var(--river-lt);
+  text-decoration: none;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .metrics-strip { grid-template-columns: repeat(2, 1fr); }
+  .metrics-strip .metric:nth-child(2) { border-right: none; }
+  .summary-bar { gap: 20px; }
+  .site-header { padding: 32px 0 24px; }
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-left">
+      <div class="header-eyebrow">🏔 Sierra Nevada · California</div>
+      <h1 class="header-title">Sierra <span>Streamflow</span></h1>
+      <p class="header-subtitle">Real-time discharge monitoring · Tuolumne, Merced &amp; Stanislaus watersheds</p>
+    </div>
+    <div class="header-right">
+      <div class="update-badge">
+        <div class="update-dot"></div>
+        <span class="update-text" id="last-updated">Loading…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Summary bar ────────────────────────────────────────────────────── -->
+  <div class="summary-bar" id="summary-bar">
+    <div class="summary-stat">
+      <div class="summary-stat-label">Stations Active</div>
+      <div class="summary-stat-value" id="sum-active">—</div>
+      <div class="summary-stat-sub">of <span id="sum-total">—</span> monitored</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-stat-label">High Flow Alerts</div>
+      <div class="summary-stat-value" id="sum-alerts">—</div>
+      <div class="summary-stat-sub">ELEVATED or above</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-stat-label">Tuolumne at Modesto</div>
+      <div class="summary-stat-value" id="sum-modesto">— <small style="font-size:14px;font-weight:400">cfs</small></div>
+      <div class="summary-stat-sub">main stem to valley</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-stat-label">Merced at Yosemite</div>
+      <div class="summary-stat-value" id="sum-merced">— <small style="font-size:14px;font-weight:400">cfs</small></div>
+      <div class="summary-stat-sub">Pohono Bridge</div>
+    </div>
+  </div>
+
+  <!-- ── Station sections (injected by JS) ──────────────────────────────── -->
+  <div id="dashboard">
+    <div class="loading-state">⛰ Loading streamflow data…</div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-text">
+      Data: <a href="https://waterservices.usgs.gov/" target="_blank">USGS National Water Information System</a> ·
+      Updated hourly via GitHub Actions · Built with open data &amp; open source tools
+    </div>
+    <div class="footer-text">
+      Stations: Tuolumne · Merced · Stanislaus · Big Creek
+    </div>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// ── River groupings ──────────────────────────────────────────────────────────
+const RIVER_ORDER = ["Tuolumne","Merced","Stanislaus","Big Creek"];
+const RIVER_ICONS = {
+  "Tuolumne":   "🏔",
+  "Merced":     "🌲",
+  "Stanislaus": "🌾",
+  "Big Creek":  "💧",
+};
+
+// ── Chart.js defaults ────────────────────────────────────────────────────────
+Chart.defaults.font.family = "'Roboto Condensed', sans-serif";
+
+// ── Colour helpers ───────────────────────────────────────────────────────────
+const STATUS_COLORS = {
+  NORMAL:   "#7A8C6E",
+  ELEVATED: "#C4873A",
+  HIGH:     "#A84B2A",
+  FLOOD:    "#C23B22",
+  error:    "#7A6248",
+  no_data:  "#7A6248",
+};
+
+function metricClass(val) {
+  if (val === null || val === undefined || val === "N/A") return "na";
+  const n = parseFloat(val);
+  if (isNaN(n)) return "";
+  return n > 0 ? "pos" : n < 0 ? "neg" : "";
+}
+
+function fmtFlow(v) {
+  if (v === null || v === undefined) return "—";
+  return Number(v).toLocaleString();
+}
+
+function lyPctBadge(pct) {
+  if (pct === null || pct === undefined) return "—";
+  const s = pct >= 0 ? "+" : "";
+  return `${s}${pct.toFixed(0)}%`;
+}
+
+// ── Build a station card ─────────────────────────────────────────────────────
+let chartCount = 0;
+
+function buildCard(st) {
+  const cid = `chart-${chartCount++}`;
+  const status = st.status || "error";
+  const hasData = (status !== "error" && status !== "no_data");
+
+  const d1h  = st.flow_d1h_fmt  || "N/A";
+  const d24h = st.flow_d24h_fmt || "N/A";
+  const min7 = st.flow_7d_min != null ? fmtFlow(st.flow_7d_min) : "—";
+  const max7 = st.flow_7d_max != null ? fmtFlow(st.flow_7d_max) : "—";
+  const lyPct = lyPctBadge(st.ly_pct);
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <div class="card-stripe ${status}"></div>
+    <div class="card-body">
+      <div class="station-header">
+        <div class="station-name">${st.name}</div>
+        <div class="station-id">USGS ${st.id}</div>
+      </div>
+
+      ${hasData ? `
+      <div class="flow-row">
+        <div class="flow-number">${fmtFlow(st.current_flow)}</div>
+        <div class="flow-unit">cfs</div>
+        <div class="flow-trend">${st.trend_emoji || "➡️"}</div>
+      </div>
+
+      <div>
+        <span class="status-pill ${status}">${status}</span>
+      </div>
+
+      <div class="metrics-strip">
+        <div class="metric">
+          <div class="metric-label">Δ 1h</div>
+          <div class="metric-value ${metricClass(st.flow_d1h)}">${d1h}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Δ 24h</div>
+          <div class="metric-value ${metricClass(st.flow_d24h)}">${d24h}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">7d Range</div>
+          <div class="metric-value">${min7}–${max7}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">vs Last Yr</div>
+          <div class="metric-value ${metricClass(st.ly_pct)}">${lyPct}</div>
+        </div>
+      </div>
+
+      <div class="sparkline-wrap">
+        <canvas id="${cid}" height="72"></canvas>
+      </div>
+      ` : `
+      <div style="padding: 16px 0; color: var(--text-muted); font-style: italic; font-size:13px;">
+        ${st.error || "No data available"}
+      </div>
+      `}
+    </div>
+    <div class="card-footer">
+      <span class="footer-time">${st.last_update || "—"}</span>
+      ${st.usgs_url ? `<a class="footer-link" href="${st.usgs_url}" target="_blank">View on USGS →</a>` : ""}
+    </div>
+  `;
+
+  // Render sparkline after DOM insert
+  if (hasData && st.sparkline_flow?.length) {
+    requestAnimationFrame(() => {
+      const canvas = document.getElementById(cid);
+      if (!canvas) return;
+      const pts   = st.sparkline_flow;
+      const color = STATUS_COLORS[status] || "#7A8C6E";
+
+      new Chart(canvas.getContext("2d"), {
+        type: "line",
+        data: {
+          labels: pts.map(p => p.t),
+          datasets: [{
+            data: pts.map(p => p.v),
+            borderColor: color,
+            borderWidth: 1.5,
+            pointRadius: 0,
+            fill: true,
+            backgroundColor: (ctx) => {
+              const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 72);
+              g.addColorStop(0, color + "55");
+              g.addColorStop(1, color + "06");
+              return g;
+            },
+            tension: 0.3,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { display: false },
+            y: {
+              display: true,
+              position: "right",
+              grid: { color: "rgba(90,62,34,0.1)", drawBorder: false },
+              ticks: {
+                maxTicksLimit: 3,
+                color: "#7A6248",
+                font: { size: 9, family: "'Roboto Condensed', sans-serif" },
+                callback: v => v >= 1000 ? (v/1000).toFixed(1)+"k" : v,
+              },
+            }
+          }
+        }
+      });
+    });
+  }
+
+  return card;
+}
+
+// ── Main render ──────────────────────────────────────────────────────────────
+async function init() {
+  const dash = document.getElementById("dashboard");
+
+  let data;
+  try {
+    const res = await fetch("data/processed/streamflow.json?_=" + Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    data = await res.json();
+  } catch (e) {
+    dash.innerHTML = `<div class="error-card">
+      ⚠️ Could not load streamflow data. Run <code>python scripts/fetch.py</code> to generate it,
+      or wait for the next hourly GitHub Actions run.<br><br>
+      <small>${e.message}</small>
+    </div>`;
+    return;
+  }
+
+  // ── Header timestamp ──────────────────────────────────────────────────────
+  document.getElementById("last-updated").textContent =
+    `Updated ${data.generated_at_pt || "recently"}`;
+
+  const stations = data.stations || [];
+
+  // ── Summary stats ─────────────────────────────────────────────────────────
+  const active = stations.filter(s => s.status && s.status !== "error" && s.status !== "no_data");
+  const alerts = stations.filter(s => ["ELEVATED","HIGH","FLOOD"].includes(s.status));
+  document.getElementById("sum-active").textContent = active.length;
+  document.getElementById("sum-total").textContent  = stations.length;
+  document.getElementById("sum-alerts").textContent = alerts.length;
+
+  const modesto = stations.find(s => s.id === "11290000");
+  const merced  = stations.find(s => s.id === "11266500");
+  document.getElementById("sum-modesto").innerHTML =
+    modesto?.current_flow != null
+      ? `${fmtFlow(modesto.current_flow)} <small style="font-size:14px;font-weight:400">cfs</small>`
+      : "—";
+  document.getElementById("sum-merced").innerHTML =
+    merced?.current_flow != null
+      ? `${fmtFlow(merced.current_flow)} <small style="font-size:14px;font-weight:400">cfs</small>`
+      : "—";
+
+  // ── Group by river ────────────────────────────────────────────────────────
+  const byRiver = {};
+  for (const st of stations) {
+    const r = st.river || "Other";
+    if (!byRiver[r]) byRiver[r] = [];
+    byRiver[r].push(st);
+  }
+
+  dash.innerHTML = "";
+
+  for (const river of RIVER_ORDER) {
+    const group = byRiver[river];
+    if (!group?.length) continue;
+
+    const section = document.createElement("div");
+    section.className = "river-section";
+    section.innerHTML = `
+      <div class="river-label">
+        <span class="river-icon">${RIVER_ICONS[river] || "🌊"}</span>
+        <h2>${river} River${river === "Big Creek" ? "" : " Watershed"}</h2>
+        <div class="river-label-line"></div>
+      </div>
+      <div class="station-grid"></div>
+    `;
+
+    const grid = section.querySelector(".station-grid");
+    for (const st of group) {
+      grid.appendChild(buildCard(st));
+    }
+    dash.appendChild(section);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

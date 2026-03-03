@@ -1,76 +1,175 @@
-# 🏔 Sierra Streamflow Monitor
+# 🌊 Sierra Streamflow Monitor
 
-Real-time stream discharge monitoring for the Tuolumne, Merced, and Stanislaus watersheds.
+> *"We're gonna need a bigger dataset."*
 
-**[View Live Dashboard →](https://bdgroves.github.io/sierra-streamflow)**
+**[→ Launch the Dashboard](https://bdgroves.github.io/sierra-streamflow)**
 
-Updated automatically every hour via GitHub Actions.
+The Sierra Nevada snowpack is a frozen reservoir sitting at 8,000 feet. Every spring, it melts. Millions of acre-feet of water surge down granite canyons, through reservoirs, past farms, and into the Central Valley — feeding cities, crops, and ecosystems all the way to the San Francisco Bay.
+
+This dashboard puts you inside that pulse. Eight USGS stream gages. Three major watersheds. Twenty years of history. Updated every Monday.
 
 ---
 
-## 📡 Monitored Stations
+## 🏔 What You're Looking At
 
-| Station | USGS ID | River | Elevation |
+When a storm rolls into the Sierra, the rivers don't respond immediately. Water has to fall as snow at elevation, accumulate over weeks or months, then melt when temperatures rise — or in a big atmospheric river event, it falls as rain directly onto the snowpack, triggering a rapid, powerful pulse of runoff called a **rain-on-snow event**. These are the dangerous ones.
+
+The dashboard shows you where each river stands right now versus every water year since 2005. That grey spaghetti of historical lines? Each one is a full water year — a season of drought, a year of flood, an average spring. The bold teal line cutting through is *this year, right now.* When it climbs above the spaghetti, something unusual is happening.
+
+### How Water Moves Through the Sierra
+
+```
+SIERRA NEVADA CREST (8,000–13,000 ft)
+         │
+         │  ❄️ Snow accumulates Oct–Mar
+         │  🌧 Rain-on-snow events possible Nov–Apr
+         │  ☀️ Snowmelt dominates Apr–Jul
+         ▼
+    Headwater Gages  ←── First to respond (hours)
+    (Hetch Hetchy, Happy Isles, Pohono Bridge)
+         │
+         │  Water travels through granite canyons
+         │  Reservoirs buffer some of the pulse
+         ▼
+    Mid-watershed Gages  ←── Lag: 6–24 hours
+    (Grand Canyon of the Tuolumne, LaGrange Dam)
+         │
+         │  Rivers braid into the foothills
+         │  Irrigation diversions begin here
+         ▼
+    Valley Gages  ←── Lag: 1–3 days
+    (Modesto, Ripon)
+         │
+         ▼
+    San Joaquin River → San Francisco Bay
+```
+
+Watch a big storm event unfold in slow motion: a spike at Hetch Hetchy on Monday becomes a spike at Modesto by Thursday.
+
+---
+
+## 📡 The Eight Gages
+
+| Station | River | Elevation | What It Tells You |
 |---|---|---|---|
-| Tuolumne R nr Hetch Hetchy | 11276500 | Tuolumne | 3,860 ft |
-| Tuolumne R Grand Canyon | 11274790 | Tuolumne | 2,200 ft |
-| Tuolumne R bl LaGrange Dam | 11289650 | Tuolumne | 430 ft |
-| Tuolumne R at Modesto | 11290000 | Tuolumne | 90 ft |
-| Merced R at Pohono Bridge (Yosemite) | 11266500 | Merced | 3,960 ft |
-| Merced R at Merced Falls | 11270900 | Merced | 330 ft |
-| Stanislaus R at Ripon | 11303000 | Stanislaus | 60 ft |
-| Big Creek at Whites Gulch | 11284400 | Big Creek | 2,100 ft |
+| **Hetch Hetchy** · `11276500` | Tuolumne | 3,860 ft | First read on Tuolumne headwaters; downstream from O'Shaughnessy Dam |
+| **Grand Canyon** · `11274790` | Tuolumne | 2,200 ft | Wild canyon reach below Hetch Hetchy, before any major valley influence |
+| **LaGrange Dam** · `11289650` | Tuolumne | 430 ft | Below the last major Tuolumne dam; what actually enters the valley |
+| **Modesto** · `11290000` | Tuolumne | 90 ft | Main stem at the valley floor — the bottom line for Central Valley water |
+| **Pohono Bridge** · `11266500` | Merced | 3,960 ft | The classic Yosemite Valley gage; spectacular in flood years |
+| **Happy Isles** · `11264500` | Merced | 4,000 ft | Above Pohono, catches the raw Yosemite backcountry signal |
+| **Ripon** · `11303000` | Stanislaus | 60 ft | Stanislaus River at valley floor, below New Melones Reservoir |
+| **Big Creek** · `11284400` | Big Creek | 2,100 ft | Small unregulated tributary — a pure snowmelt signal, no dams |
 
-## 📊 Dashboard Metrics
+**Why Big Creek matters:** Most Sierra gages sit downstream of major reservoirs, which smooth out the natural flood pulse. Big Creek has no dams. It responds directly and honestly to whatever the Sierra Nevada is doing. It's the canary in the watershed.
 
-Each station card displays:
-- **Current discharge** (cfs) with trend direction
-- **Flow status** — NORMAL / ELEVATED / HIGH / FLOOD
-- **Δ 1h / Δ 24h** — change from 1 hour and 24 hours ago
-- **7-day range** — min and max over the past week
-- **vs Last Year** — % above/below same date last year
-- **7-day sparkline** — discharge time series chart
+---
 
-## 🚀 Run It Yourself
+## 📊 Reading the Spaghetti Charts
+
+Each station shows a **spaghetti plot** — the same visualization used by meteorologists for ensemble weather forecasts and USGS scientists for flood outlooks.
+
+- 🩶 **Grey lines** — each one is a complete water year (2005–2024). The spread shows natural variability.
+- 🟤 **Dashed brown line** — the median across all years. A typical year.
+- 🟢 **Bold teal line** — this water year (Oct 2025 → now). How does this year stack up?
+
+When the teal line rides above the spaghetti mass, this year is historically wet. When it disappears into the bottom of the bundle, drought. When it punches straight up off the top — something exceptional is happening.
+
+**Flow status thresholds:**
+
+| Status | Discharge | What it means |
+|---|---|---|
+| 🟢 NORMAL | < 200 cfs | Base flow; typical low-water conditions |
+| 🟡 ELEVATED | 200–1,000 cfs | Active snowmelt or moderate storm response |
+| 🟠 HIGH | 1,000–5,000 cfs | Significant flood potential; monitor closely |
+| 🔴 FLOOD | > 5,000 cfs | Major flood event; infrastructure at risk |
+
+> One cubic foot per second (cfs) = 448 gallons per minute. The Tuolumne at Modesto during a major flood event can exceed 50,000 cfs — enough to fill an Olympic swimming pool every four seconds.
+
+---
+
+## ⚙️ How It Works
+
+The whole thing runs on free infrastructure — no servers, no cloud bills, no subscriptions.
+
+```
+Every Monday, 6:00 AM PT
+         │
+         ▼
+  GitHub Actions runner spins up
+         │
+         ▼
+  scripts/fetch.py calls USGS NWIS API
+  ├── Instantaneous Values (7-day, 15-min intervals)
+  │     → current flow, Δ1h, Δ24h, 7-day range
+  ├── Daily Values (Oct 1 → yesterday)
+  │     → current water year spaghetti line
+  └── Daily Values × 20 water years (2005–2024)
+        → historical grey spaghetti + median
+         │
+         ▼
+  Writes data/processed/streamflow.json (~2.3 MB)
+         │
+         ▼
+  Git commits & pushes (only if data changed)
+         │
+         ▼
+  GitHub Pages serves index.html + JSON
+         │
+         ▼
+  Your browser renders everything client-side with Chart.js
+```
+
+**No API keys. No paid services. No database.** Just Python's standard library hitting a public government API, and a static HTML file doing all the visualization.
+
+### Run It Yourself
 
 ```bash
 git clone https://github.com/bdgroves/sierra-streamflow.git
 cd sierra-streamflow
-python scripts/fetch.py   # generates data/processed/streamflow.json
-open index.html           # view dashboard locally
+
+# Fetch all data (takes ~10–15 min: 20 years × 8 stations = 160+ API calls)
+python scripts/fetch.py
+
+# Serve locally
+python -m http.server 8000
+# open http://localhost:8000
 ```
 
-Python 3.9+ required. No dependencies beyond the standard library.
+Python 3.9+ required. Zero external dependencies — pure stdlib.
 
-## ⚙️ Automation
+---
 
-GitHub Actions runs `fetch.py` every hour:
-1. Calls USGS Instantaneous Values API (7-day period) for all stations
-2. Calls USGS Daily Values API for last-year comparison
-3. Writes `data/processed/streamflow.json`
-4. Commits only if data changed
-5. GitHub Pages serves the dashboard automatically
+## 🛠 Stack
 
-## 🛠 Tech Stack
+| Layer | Technology |
+|---|---|
+| Data fetching | Python 3.12 · `urllib` · `zoneinfo` (stdlib only) |
+| Data source | [USGS NWIS](https://waterservices.usgs.gov/) — public, free, no key required |
+| Visualization | [Chart.js 4.4](https://www.chartjs.org/) — spaghetti plots, water-year x-axis |
+| Map | [Leaflet](https://leafletjs.com/) + [OpenStreetMap](https://www.openstreetmap.org/) tiles |
+| Automation | GitHub Actions — weekly cron, no pip installs needed |
+| Hosting | GitHub Pages — free, static, globally cached |
+| Design | NPS-aesthetic · Playfair Display · Source Serif 4 · earthy bark-and-parchment palette |
 
-```
-sierra-streamflow/
-├── 🐍 Python 3.12       — USGS API fetching, JSON output (stdlib only)
-├── 🌐 HTML/CSS/JS        — NPS-aesthetic dashboard, Chart.js sparklines
-├── ⚙️  GitHub Actions    — hourly cron scheduler
-└── 🌐 GitHub Pages      — free live hosting
-```
+---
 
-## 🗺 Roadmap
+## 🗺 What's Next
 
-- [ ] 30-year historical percentile overlay
-- [ ] Flood stage threshold lines on sparklines
-- [ ] Interactive Leaflet map of all stations
-- [ ] Melt season / snowmelt alert integration with SNOTEL data
-- [ ] Bluesky/Twitter auto-post on significant flow events (ported from n8n)
+- [ ] **SNOTEL integration** — overlay Sierra snowpack (SWE) from NRCS alongside streamflow; the upstream leading indicator before the pulse arrives
+- [ ] **Flood stage lines** — USGS official flood stage thresholds drawn directly on each chart
+- [ ] **Atmospheric river alerts** — auto-post to Bluesky when a major flow event is detected (porting from existing n8n workflow)
+- [ ] **Percentile bands** — shade the 10th/90th percentile envelope around the spaghetti for drought/flood framing
+- [ ] **Flow travel time** — visualize how a pulse moves from Hetch Hetchy to Modesto over 1–3 days
 
-## 📄 License
+---
 
-MIT — use it, fork it, build on it.
+## 📄 Data & License
 
-Data: [USGS National Water Information System](https://waterservices.usgs.gov/)
+Stream discharge data from the **[USGS National Water Information System](https://waterservices.usgs.gov/)** — a federal public dataset, updated continuously by sensors maintained by the U.S. Geological Survey since the early 1900s.
+
+Code: MIT — fork it, build on it, make it yours.
+
+---
+
+*Built to understand the water that falls on granite and ends up in a glass.*

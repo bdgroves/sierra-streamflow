@@ -6,771 +6,687 @@
 <title>Sierra Streamflow Monitor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
 <style>
-/* ── Design tokens ─────────────────────────────────────────────────────────── */
 :root {
-  --bark:      #2C1F0E;
-  --bark-mid:  #3D2B12;
-  --bark-lt:   #5A3E22;
-  --parchment: #F5EDD8;
-  --cream:     #FAF4E8;
-  --sand:      #D4B896;
-  --sage:      #7A8C6E;
-  --sage-dk:   #4E5C42;
-  --river:     #4A7C8E;
-  --river-lt:  #6BAFC5;
-  --river-glow:#A8D4E0;
-  --moss:      #5C7A4E;
-  --ochre:     #C4873A;
-  --ochre-lt:  #E0A85A;
+  --bark:      #1E1508;
+  --bark-lt:   #3D2B12;
+  --bark-mid:  #4A3520;
+  --parchment: #F4EDD8;
+  --cream:     #FAF5EC;
+  --sand:      #C8A87A;
+  --teal:      #1B7A6E;
+  --teal-lt:   #2BA898;
+  --river:     #2E7D8C;
+  --river-lt:  #4AACBF;
+  --ochre-lt:  #DFA050;
   --rust:      #A84B2A;
-  --alert-red: #C23B22;
-  --snow:      #EDF4F7;
+  --alert:     #C23B22;
   --text-main: #1C1209;
-  --text-mid:  #4A3520;
+  --text-mid:  #3D2B12;
   --text-muted:#7A6248;
-  --border:    rgba(90,62,34,0.18);
-  --shadow:    0 4px 32px rgba(28,18,9,0.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{
+  font-family:'Source Serif 4',Georgia,serif;
+  background:var(--bark);
+  color:var(--parchment);
+  min-height:100vh;
 }
 
-/* ── Reset & base ──────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── PAGE ── */
+.page{max-width:1600px;margin:0 auto;padding:0 32px 80px;}
 
-body {
-  font-family: 'Source Serif 4', Georgia, serif;
-  background: var(--bark);
-  color: var(--text-main);
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
+/* ── HEADER ── */
+.site-header{
+  padding:36px 0 28px;
+  border-bottom:1px solid var(--bark-lt);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
+}
+.header-left{}
+.eyebrow{
+  font-family:'Roboto Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--ochre-lt);margin-bottom:8px;
+}
+.site-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(26px,3.5vw,46px);font-weight:900;line-height:1;color:var(--parchment);
+}
+.site-title em{color:var(--river-lt);font-style:normal;}
+.site-sub{margin-top:6px;font-style:italic;font-size:12px;color:var(--sand);font-weight:300;}
+.update-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.05);border:1px solid var(--bark-lt);
+  border-radius:3px;padding:8px 14px;flex-shrink:0;
+}
+.pulse{width:6px;height:6px;background:var(--teal-lt);border-radius:50%;animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.update-text{font-family:'Roboto Condensed',sans-serif;font-size:11px;letter-spacing:.08em;color:var(--sand);}
+
+/* ── SUMMARY STRIP ── */
+.summary{
+  display:flex;margin-top:24px;
+  border:1px solid var(--bark-lt);border-radius:4px;overflow:hidden;
+}
+.sum-stat{flex:1;padding:14px 18px;border-right:1px solid var(--bark-lt);}
+.sum-stat:last-child{border-right:none;}
+.sum-label{font-family:'Roboto Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ochre-lt);margin-bottom:4px;}
+.sum-value{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--parchment);line-height:1;}
+.sum-sub{font-style:italic;font-size:10px;color:var(--sand);font-weight:300;margin-top:2px;}
+
+/* ── RADIAL LAYOUT SECTION TITLE ── */
+.section-label{
+  margin-top:36px;margin-bottom:16px;
+  font-family:'Roboto Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--ochre-lt);
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--bark-lt),transparent);}
+
+/* ── RADIAL MAP LAYOUT ── */
+/*
+  3-column grid: [left charts] [center map] [right charts]
+  Left col: stations that are geographically W of watershed center
+  Right col: stations that are E / high country
+*/
+.radial-layout{
+  display:grid;
+  grid-template-columns:1fr 420px 1fr;
+  grid-template-rows:auto;
+  gap:0 24px;
+  align-items:center;
+  position:relative;
 }
 
-/* Subtle bark-texture overlay */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0px, transparent 120px,
-      rgba(255,255,255,0.012) 120px, rgba(255,255,255,0.012) 121px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0px, transparent 80px,
-      rgba(0,0,0,0.04) 80px, rgba(0,0,0,0.04) 81px
-    );
-  pointer-events: none;
-  z-index: 0;
+/* SVG overlay for leader lines — sits on top of everything */
+#leader-svg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  pointer-events:none;
+  z-index:10;
+  overflow:visible;
 }
 
-/* ── Page shell ────────────────────────────────────────────────────────────── */
-.page {
-  position: relative; z-index: 1;
-  max-width: 1320px;
-  margin: 0 auto;
-  padding: 0 24px 80px;
+/* ── CENTER MAP ── */
+.map-col{
+  grid-column:2;
+  grid-row:1/99;/* span all rows */
+  display:flex;flex-direction:column;gap:8px;
+  align-self:start;
+  position:sticky;top:20px;
+}
+.map-title{font-family:'Roboto Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre-lt);}
+#watershed-map{
+  width:100%;height:460px;
+  border-radius:5px;border:1px solid var(--bark-lt);
+  overflow:hidden;
+}
+/* Leaflet tile greyscale + warm tint */
+.leaflet-tile{filter:saturate(0.15) brightness(0.88) sepia(0.25);}
+.leaflet-container{background:#1a1208!important;}
+
+.map-legend{display:flex;flex-wrap:wrap;gap:10px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-family:'Roboto Condensed',sans-serif;font-size:10px;letter-spacing:.06em;color:var(--sand);}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── CHART COLUMNS ── */
+.left-col{
+  grid-column:1;
+  display:flex;flex-direction:column;
+  gap:18px;
+  padding-top:8px;
+}
+.right-col{
+  grid-column:3;
+  display:flex;flex-direction:column;
+  gap:18px;
+  padding-top:8px;
 }
 
-/* ── Header ────────────────────────────────────────────────────────────────── */
-.site-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 48px 0 36px;
-  border-bottom: 2px solid var(--bark-lt);
-  flex-wrap: wrap;
+/* ── MINI CHART CARD ── */
+.mcard{
+  background:var(--parchment);
+  border-radius:4px;
+  overflow:hidden;
+  box-shadow:0 3px 16px rgba(0,0,0,.3);
+  transition:transform .15s,box-shadow .15s;
+}
+.mcard:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,.4);}
+
+.mcard-head{
+  padding:8px 12px 4px;
+  background:var(--cream);
+  border-bottom:1px solid rgba(90,62,34,.1);
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.mcard-name{
+  font-family:'Roboto Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--text-mid);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.mcard-flow-row{display:flex;align-items:baseline;gap:5px;flex-shrink:0;}
+.mcard-flow{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--bark);line-height:1;}
+.mcard-unit{font-family:'Source Serif 4',serif;font-style:italic;font-size:10px;color:var(--text-muted);font-weight:300;}
+
+.mcard-chart{padding:4px 8px 6px 4px;height:90px;position:relative;}
+.mcard-legend{
+  position:absolute;top:5px;right:10px;
+  display:flex;gap:8px;
+}
+.mcl-item{display:flex;align-items:center;gap:3px;font-family:'Roboto Condensed',sans-serif;font-size:8px;color:var(--text-muted);letter-spacing:.04em;}
+.mcl-swatch{width:14px;height:1.5px;border-radius:1px;}
+.mcl-swatch.hist   {background:rgba(180,155,120,.55);}
+.mcl-swatch.median {background:#8C6E45;}
+.mcl-swatch.current{background:#1B7A6E;height:2px;}
+
+.mcard-foot{
+  padding:5px 12px;
+  background:var(--cream);
+  border-top:1px solid rgba(90,62,34,.08);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.mcard-meta{font-family:'Roboto Condensed',sans-serif;font-size:9px;color:var(--text-muted);letter-spacing:.04em;}
+.mcard-pills{display:flex;gap:5px;align-items:center;}
+.status-pill{
+  display:inline-block;padding:1px 6px;border-radius:2px;
+  font-family:'Roboto Condensed',sans-serif;font-size:8px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+}
+.status-pill.NORMAL  {background:rgba(122,140,110,.2);color:#3A5230;}
+.status-pill.ELEVATED{background:rgba(196,135,58,.2);color:#7A4500;}
+.status-pill.HIGH    {background:rgba(168,75,42,.2);color:#7A2800;}
+.status-pill.FLOOD   {background:rgba(194,59,34,.2);color:#8A1500;}
+.status-pill.no_data,
+.status-pill.error   {background:rgba(122,98,72,.15);color:var(--text-muted);}
+
+.delta-chip{
+  font-family:'Roboto Condensed',sans-serif;font-size:9px;font-weight:700;
+  padding:1px 5px;border-radius:2px;
+}
+.delta-chip.pos{background:rgba(168,75,42,.12);color:#8B2500;}
+.delta-chip.neg{background:rgba(27,122,110,.12);color:#1B5C70;}
+.delta-chip.flat{background:rgba(122,98,72,.1);color:var(--text-muted);}
+
+/* no-data placeholder */
+.mcard-nodata{
+  background:rgba(255,255,255,.04);border:1px solid var(--bark-lt);
+  border-radius:4px;padding:14px 16px;
+  font-style:italic;color:var(--sand);font-size:12px;
 }
 
-.header-left {}
-
-.header-eyebrow {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ochre-lt);
-  margin-bottom: 10px;
+/* ── CARD CONNECTOR DOTS (small anchor on card edge) ── */
+.mcard-anchor{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--teal-lt);border:2px solid var(--parchment);
+  position:absolute;top:50%;
+  z-index:20;
 }
+.left-col  .mcard-anchor{right:-4px;transform:translateY(-50%);}
+.right-col .mcard-anchor{left:-4px; transform:translateY(-50%);}
 
-.header-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(32px, 5vw, 58px);
-  font-weight: 900;
-  line-height: 1;
-  color: var(--parchment);
-  letter-spacing: -0.01em;
+/* ── FULL CHART SECTION BELOW ── */
+.full-section{margin-top:48px;}
+.river-heading{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.river-heading h2{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--parchment);}
+.river-line{flex:1;height:1px;background:linear-gradient(to right,var(--bark-lt),transparent);}
+.full-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px;}
+
+/* FULL-SIZE SPAGHETTI CARD */
+.scard{
+  background:var(--parchment);border-radius:5px;overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,.28);
+  display:grid;grid-template-columns:175px 1fr;grid-template-rows:1fr auto;
 }
-
-.header-title span {
-  color: var(--river-lt);
+.scard-meta{
+  padding:15px 14px;background:var(--cream);
+  border-right:1px solid rgba(90,62,34,.12);
+  display:flex;flex-direction:column;gap:8px;justify-content:space-between;
 }
-
-.header-subtitle {
-  margin-top: 10px;
-  font-family: 'Source Serif 4', serif;
-  font-style: italic;
-  font-size: 14px;
-  color: var(--sand);
-  font-weight: 300;
+.scard-name{font-family:'Roboto Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-mid);line-height:1.3;}
+.scard-flow{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;line-height:1;color:var(--bark);}
+.scard-unit{font-family:'Source Serif 4',serif;font-style:italic;font-size:11px;color:var(--text-muted);font-weight:300;}
+.scard-metrics{display:flex;flex-direction:column;gap:3px;}
+.scard-metric{display:flex;justify-content:space-between;font-family:'Roboto Condensed',sans-serif;font-size:10px;}
+.scard-metric-label{color:var(--text-muted);}
+.scard-metric-val{font-weight:700;color:var(--text-main);}
+.scard-metric-val.pos{color:#8B2500;}
+.scard-metric-val.neg{color:#1B5C70;}
+.scard-chart-wrap{padding:8px 10px 6px 2px;position:relative;min-height:148px;}
+.chart-legend{position:absolute;top:7px;right:10px;display:flex;flex-direction:column;gap:2px;align-items:flex-end;}
+.cl-item{display:flex;align-items:center;gap:4px;font-family:'Roboto Condensed',sans-serif;font-size:8px;letter-spacing:.04em;color:var(--text-muted);}
+.cl-swatch{width:16px;height:1.5px;border-radius:1px;}
+.cl-swatch.hist   {background:rgba(180,155,120,.55);}
+.cl-swatch.median {background:#8C6E45;}
+.cl-swatch.current{background:#1B7A6E;height:2px;}
+.scard-footer{
+  grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;
+  padding:6px 14px;border-top:1px solid rgba(90,62,34,.1);background:var(--cream);
 }
+.scard-time{font-family:'Roboto Condensed',sans-serif;font-size:9px;color:var(--text-muted);}
+.scard-link{font-family:'Roboto Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--river);text-decoration:none;}
+.scard-link:hover{text-decoration:underline;}
 
-.header-right {
-  text-align: right;
+/* FOOTER */
+.site-footer{
+  margin-top:56px;padding-top:20px;border-top:1px solid var(--bark-lt);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
 }
-
-.update-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--bark-lt);
-  border-radius: 4px;
-  padding: 10px 16px;
-}
-
-.update-dot {
-  width: 7px; height: 7px;
-  background: var(--moss);
-  border-radius: 50%;
-  animation: pulse 2.4s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-
-.update-text {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--sand);
-}
-
-/* ── River group headers ───────────────────────────────────────────────────── */
-.river-section {
-  margin-top: 52px;
-}
-
-.river-label {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.river-label h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--parchment);
-  letter-spacing: 0.01em;
-}
-
-.river-label-line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, var(--bark-lt), transparent);
-}
-
-.river-icon {
-  font-size: 18px;
-}
-
-/* ── Station grid ──────────────────────────────────────────────────────────── */
-.station-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 20px;
-}
-
-/* ── Station card ──────────────────────────────────────────────────────────── */
-.card {
-  background: var(--parchment);
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 40px rgba(28,18,9,0.28);
-}
-
-/* Status stripe across top */
-.card-stripe {
-  height: 4px;
-  background: var(--sage);
-}
-
-.card-stripe.NORMAL   { background: var(--sage); }
-.card-stripe.ELEVATED { background: var(--ochre); }
-.card-stripe.HIGH     { background: var(--rust); }
-.card-stripe.FLOOD    { background: var(--alert-red); }
-.card-stripe.error,
-.card-stripe.no_data  { background: var(--text-muted); }
-
-.card-body {
-  padding: 20px 22px 16px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-/* Station name row */
-.station-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.station-name {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-  line-height: 1.3;
-}
-
-.station-id {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-}
-
-/* Big flow number */
-.flow-row {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-
-.flow-number {
-  font-family: 'Playfair Display', serif;
-  font-size: 48px;
-  font-weight: 900;
-  line-height: 1;
-  color: var(--bark);
-}
-
-.flow-unit {
-  font-family: 'Source Serif 4', serif;
-  font-style: italic;
-  font-size: 14px;
-  color: var(--text-muted);
-  font-weight: 300;
-}
-
-.flow-trend {
-  font-size: 20px;
-  margin-left: auto;
-  line-height: 1;
-}
-
-/* Status pill */
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
-  border-radius: 2px;
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  align-self: flex-start;
-}
-
-.status-pill.NORMAL   { background: rgba(122,140,110,0.18); color: var(--sage-dk); }
-.status-pill.ELEVATED { background: rgba(196,135,58,0.18);  color: #7A5010; }
-.status-pill.HIGH     { background: rgba(168,75,42,0.18);   color: var(--rust); }
-.status-pill.FLOOD    { background: rgba(194,59,34,0.18);   color: var(--alert-red); }
-.status-pill.error,
-.status-pill.no_data  { background: rgba(122,98,72,0.15);   color: var(--text-muted); }
-
-/* Metrics strip */
-.metrics-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.metric {
-  padding: 8px 10px;
-  border-right: 1px solid var(--border);
-  text-align: center;
-}
-
-.metric:last-child { border-right: none; }
-
-.metric-label {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 3px;
-}
-
-.metric-value {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-main);
-}
-
-.metric-value.pos { color: var(--rust); }
-.metric-value.neg { color: var(--river); }
-.metric-value.na  { color: var(--text-muted); font-weight: 400; }
-
-/* Sparkline chart */
-.sparkline-wrap {
-  height: 72px;
-  position: relative;
-}
-
-/* Card footer */
-.card-footer {
-  padding: 10px 22px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid var(--border);
-}
-
-.footer-time {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-}
-
-.footer-link {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--river);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.15s;
-}
-
-.footer-link:hover { border-color: var(--river); }
-
-/* ── Summary bar ───────────────────────────────────────────────────────────── */
-.summary-bar {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-  padding: 24px 28px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--bark-lt);
-  border-radius: 4px;
-  margin-top: 48px;
-}
-
-.summary-stat {}
-
-.summary-stat-label {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ochre-lt);
-  margin-bottom: 4px;
-}
-
-.summary-stat-value {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--parchment);
-  line-height: 1;
-}
-
-.summary-stat-sub {
-  font-family: 'Source Serif 4', serif;
-  font-style: italic;
-  font-size: 11px;
-  color: var(--sand);
-  font-weight: 300;
-  margin-top: 3px;
-}
-
-/* ── Error / loading ───────────────────────────────────────────────────────── */
-.loading-state {
-  text-align: center;
-  padding: 80px 0;
-  color: var(--sand);
-  font-style: italic;
-  font-size: 16px;
-}
-
-.error-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--bark-lt);
-  border-radius: 6px;
-  padding: 24px;
-  color: var(--sand);
-  font-style: italic;
-  font-size: 14px;
-  grid-column: 1/-1;
-}
-
-/* ── Footer ────────────────────────────────────────────────────────────────── */
-.site-footer {
-  margin-top: 72px;
-  padding-top: 28px;
-  border-top: 1px solid var(--bark-lt);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.footer-text {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-  line-height: 1.8;
-}
-
-.footer-text a {
-  color: var(--river-lt);
-  text-decoration: none;
-}
-
-/* ── Responsive ────────────────────────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .metrics-strip { grid-template-columns: repeat(2, 1fr); }
-  .metrics-strip .metric:nth-child(2) { border-right: none; }
-  .summary-bar { gap: 20px; }
-  .site-header { padding: 32px 0 24px; }
-}
+.site-footer p{font-family:'Roboto Condensed',sans-serif;font-size:11px;color:var(--text-muted);line-height:1.8;letter-spacing:.04em;}
+.site-footer a{color:var(--river-lt);text-decoration:none;}
 </style>
 </head>
-
 <body>
 <div class="page">
 
-  <!-- ── Header ─────────────────────────────────────────────────────────── -->
-  <header class="site-header">
-    <div class="header-left">
-      <div class="header-eyebrow">🏔 Sierra Nevada · California</div>
-      <h1 class="header-title">Sierra <span>Streamflow</span></h1>
-      <p class="header-subtitle">Real-time discharge monitoring · Tuolumne, Merced &amp; Stanislaus watersheds</p>
-    </div>
-    <div class="header-right">
-      <div class="update-badge">
-        <div class="update-dot"></div>
-        <span class="update-text" id="last-updated">Loading…</span>
-      </div>
-    </div>
-  </header>
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-left">
+    <div class="eyebrow">🏔 Sierra Nevada · California</div>
+    <h1 class="site-title">Sierra <em>Streamflow</em></h1>
+    <p class="site-sub">Weekly discharge monitoring · current water year vs. 20-year historical record</p>
+  </div>
+  <div class="update-badge">
+    <div class="pulse"></div>
+    <span class="update-text" id="last-updated">Loading…</span>
+  </div>
+</header>
 
-  <!-- ── Summary bar ────────────────────────────────────────────────────── -->
-  <div class="summary-bar" id="summary-bar">
-    <div class="summary-stat">
-      <div class="summary-stat-label">Stations Active</div>
-      <div class="summary-stat-value" id="sum-active">—</div>
-      <div class="summary-stat-sub">of <span id="sum-total">—</span> monitored</div>
-    </div>
-    <div class="summary-stat">
-      <div class="summary-stat-label">High Flow Alerts</div>
-      <div class="summary-stat-value" id="sum-alerts">—</div>
-      <div class="summary-stat-sub">ELEVATED or above</div>
-    </div>
-    <div class="summary-stat">
-      <div class="summary-stat-label">Tuolumne at Modesto</div>
-      <div class="summary-stat-value" id="sum-modesto">— <small style="font-size:14px;font-weight:400">cfs</small></div>
-      <div class="summary-stat-sub">main stem to valley</div>
-    </div>
-    <div class="summary-stat">
-      <div class="summary-stat-label">Merced at Yosemite</div>
-      <div class="summary-stat-value" id="sum-merced">— <small style="font-size:14px;font-weight:400">cfs</small></div>
-      <div class="summary-stat-sub">Pohono Bridge</div>
+<!-- SUMMARY -->
+<div class="summary">
+  <div class="sum-stat"><div class="sum-label">Stations Active</div><div class="sum-value" id="s-active">—</div><div class="sum-sub">of <span id="s-total">—</span> monitored</div></div>
+  <div class="sum-stat"><div class="sum-label">Elevated or Above</div><div class="sum-value" id="s-alerts">—</div><div class="sum-sub">flow alerts</div></div>
+  <div class="sum-stat"><div class="sum-label">Tuolumne at Modesto</div><div class="sum-value" id="s-modesto">—</div><div class="sum-sub">cfs · main stem</div></div>
+  <div class="sum-stat"><div class="sum-label">Merced at Yosemite</div><div class="sum-value" id="s-merced">—</div><div class="sum-sub">cfs · Pohono Bridge</div></div>
+  <div class="sum-stat"><div class="sum-label">Historical Record</div><div class="sum-value" id="s-hist">—</div><div class="sum-sub">water years</div></div>
+</div>
+
+<!-- RADIAL SECTION LABEL -->
+<div class="section-label">Watershed Overview — Click any chart to jump to details</div>
+
+<!-- RADIAL MAP + MINI CHARTS -->
+<div class="radial-layout" id="radial-layout">
+
+  <!-- SVG leader lines drawn by JS -->
+  <svg id="leader-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <!-- LEFT COLUMN (valley / downstream stations) -->
+  <div class="left-col" id="left-col"></div>
+
+  <!-- CENTER MAP -->
+  <div class="map-col">
+    <div class="map-title">Gage Locations</div>
+    <div id="watershed-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#2BA898"></div>NORMAL</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#DFA050"></div>ELEVATED</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#A84B2A"></div>HIGH</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#C23B22"></div>FLOOD</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7A6248"></div>NO DATA</div>
     </div>
   </div>
 
-  <!-- ── Station sections (injected by JS) ──────────────────────────────── -->
-  <div id="dashboard">
-    <div class="loading-state">⛰ Loading streamflow data…</div>
-  </div>
+  <!-- RIGHT COLUMN (high country / headwaters) -->
+  <div class="right-col" id="right-col"></div>
 
-  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
-  <footer class="site-footer">
-    <div class="footer-text">
-      Data: <a href="https://waterservices.usgs.gov/" target="_blank">USGS National Water Information System</a> ·
-      Updated hourly via GitHub Actions · Built with open data &amp; open source tools
-    </div>
-    <div class="footer-text">
-      Stations: Tuolumne · Merced · Stanislaus · Big Creek
-    </div>
-  </footer>
+</div><!-- /radial-layout -->
+
+<!-- FULL DETAIL CHARTS BELOW -->
+<div class="full-section" id="full-section">
+  <div style="padding:40px 0;text-align:center;color:var(--sand);font-style:italic;">⛰ Loading…</div>
+</div>
+
+<footer class="site-footer">
+  <p>Data: <a href="https://waterservices.usgs.gov/" target="_blank">USGS National Water Information System</a>
+     · Updated weekly via GitHub Actions · Historical record: <span id="f-hist">—</span>
+     · Map © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</p>
+  <p>Tuolumne · Merced · Stanislaus · Big Creek</p>
+</footer>
 
 </div><!-- /page -->
 
 <script>
-// ── River groupings ──────────────────────────────────────────────────────────
+/* ── Constants ─────────────────────────────────────────────────────────────── */
+const STATUS_COLOR = {
+  NORMAL:"#2BA898", ELEVATED:"#DFA050", HIGH:"#A84B2A",
+  FLOOD:"#C23B22",  error:"#7A6248",   no_data:"#7A6248"
+};
 const RIVER_ORDER = ["Tuolumne","Merced","Stanislaus","Big Creek"];
-const RIVER_ICONS = {
-  "Tuolumne":   "🏔",
-  "Merced":     "🌲",
-  "Stanislaus": "🌾",
-  "Big Creek":  "💧",
-};
+const RIVER_ICONS = {Tuolumne:"🏔",Merced:"🌲",Stanislaus:"🌾","Big Creek":"💧"};
 
-// ── Chart.js defaults ────────────────────────────────────────────────────────
-Chart.defaults.font.family = "'Roboto Condensed', sans-serif";
+// Which stations go left (valley/west) vs right (mountains/east)
+// Left: Modesto, LaGrange, Ripon, Merced Falls
+// Right: Hetch Hetchy, Grand Canyon, Yosemite, Big Creek
+const LEFT_IDS  = ["11290000","11289650","11303000","11284400"];
+const RIGHT_IDS = ["11276500","11274790","11266500","11264500"];
 
-// ── Colour helpers ───────────────────────────────────────────────────────────
-const STATUS_COLORS = {
-  NORMAL:   "#7A8C6E",
-  ELEVATED: "#C4873A",
-  HIGH:     "#A84B2A",
-  FLOOD:    "#C23B22",
-  error:    "#7A6248",
-  no_data:  "#7A6248",
-};
-
-function metricClass(val) {
-  if (val === null || val === undefined || val === "N/A") return "na";
-  const n = parseFloat(val);
-  if (isNaN(n)) return "";
-  return n > 0 ? "pos" : n < 0 ? "neg" : "";
+/* ── Water-year axis ────────────────────────────────────────────────────────── */
+const WY_MONTHS = ["Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"];
+const WY_MDAYS  = [31,30,31,31,28,31,30,31,30,31,31,30];
+const WY_TICKS  = [];
+let _d=1; for(let m=0;m<12;m++){WY_TICKS.push({doy:_d,label:WY_MONTHS[m]});_d+=WY_MDAYS[m];}
+function doyLabel(doy){
+  let r=doy-1,mi=0;
+  while(mi<11&&r>=WY_MDAYS[mi]){r-=WY_MDAYS[mi];mi++;}
+  return `${WY_MONTHS[mi]} ${r+1}`;
 }
 
-function fmtFlow(v) {
-  if (v === null || v === undefined) return "—";
-  return Number(v).toLocaleString();
+/* ── Chart helpers ──────────────────────────────────────────────────────────── */
+const charts={};
+function buildDatasets(st){
+  const ds=[];
+  for(const[wy,pts] of Object.entries(st.hist_years||{}))
+    ds.push({label:wy,data:pts.map(p=>({x:p.doy,y:p.v})),
+      borderColor:"rgba(180,155,120,0.2)",borderWidth:0.8,
+      pointRadius:0,fill:false,tension:0.3,parsing:false});
+  if((st.median_line||[]).length)
+    ds.push({label:"Median",data:st.median_line.map(p=>({x:p.doy,y:p.v})),
+      borderColor:"rgba(140,110,70,0.8)",borderWidth:1.4,borderDash:[5,4],
+      pointRadius:0,fill:false,tension:0.3,parsing:false});
+  if((st.cur_wy||[]).length)
+    ds.push({label:"This Year",data:st.cur_wy.map(p=>({x:p.doy,y:p.v})),
+      borderColor:"#1B7A6E",borderWidth:2.2,
+      pointRadius:0,fill:false,tension:0.3,parsing:false});
+  return ds;
+}
+function axisOpts(mini){
+  return {
+    x:{type:"linear",min:1,max:366,
+      grid:{color:"rgba(90,62,34,0.07)"},
+      ticks:{color:"#7A6248",font:{size:mini?8:9,family:"'Roboto Condensed',sans-serif"},
+        callback:val=>{const t=WY_TICKS.find(t=>Math.abs(t.doy-val)<8);return t?t.label:"";},},
+      afterBuildTicks:a=>{a.ticks=WY_TICKS.map(t=>({value:t.doy}));}},
+    y:{position:"left",grid:{color:"rgba(90,62,34,0.07)"},
+      ticks:{color:"#7A6248",font:{size:mini?8:9,family:"'Roboto Condensed',sans-serif"},
+        maxTicksLimit:mini?3:5,
+        callback:v=>v>=1000?(v/1000).toFixed(1)+"k":v}},
+  };
+}
+function renderChart(canvasId,st,mini=false){
+  const canvas=document.getElementById(canvasId);
+  if(!canvas)return;
+  if(charts[canvasId]){charts[canvasId].destroy();delete charts[canvasId];}
+  charts[canvasId]=new Chart(canvas.getContext("2d"),{
+    type:"line",data:{datasets:buildDatasets(st)},
+    options:{
+      responsive:true,maintainAspectRatio:false,animation:false,
+      interaction:{mode:"index",intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          filter:i=>["This Year","Median"].includes(i.dataset.label),
+          callbacks:{
+            title:items=>items.length?doyLabel(items[0].parsed.x):"",
+            label:i=>`${i.dataset.label}: ${Number(i.parsed.y).toLocaleString()} cfs`,
+          },
+          backgroundColor:"rgba(250,245,236,0.97)",
+          titleColor:"#1C1209",bodyColor:"#3D2B12",
+          borderColor:"rgba(90,62,34,0.2)",borderWidth:1,
+          titleFont:{family:"'Roboto Condensed',sans-serif",size:10,weight:"700"},
+          bodyFont:{family:"'Roboto Condensed',sans-serif",size:10},
+        },
+      },
+      scales:axisOpts(mini),
+    },
+  });
 }
 
-function lyPctBadge(pct) {
-  if (pct === null || pct === undefined) return "—";
-  const s = pct >= 0 ? "+" : "";
-  return `${s}${pct.toFixed(0)}%`;
+/* ── Delta chip helper ─────────────────────────────────────────────────────── */
+function deltaChip(val,fmt){
+  if(val==null||fmt=="N/A")return`<span class="delta-chip flat">—</span>`;
+  const cls=val>0?"pos":val<0?"neg":"flat";
+  return`<span class="delta-chip ${cls}">${fmt}</span>`;
 }
 
-// ── Build a station card ─────────────────────────────────────────────────────
-let chartCount = 0;
+/* ── Build mini card ────────────────────────────────────────────────────────── */
+function buildMiniCard(st, side){
+  const hasData=!["error","no_data"].includes(st.status||"error");
+  const cid=`mini-${st.id}`;
+  const color=STATUS_COLOR[st.status]||"#7A6248";
 
-function buildCard(st) {
-  const cid = `chart-${chartCount++}`;
-  const status = st.status || "error";
-  const hasData = (status !== "error" && status !== "no_data");
+  if(!hasData){
+    const d=document.createElement("div");
+    d.className="mcard-nodata";d.id=`card-${st.id}`;
+    d.innerHTML=`<strong style="font-style:normal">${st.short||st.name}</strong> — No data`;
+    return d;
+  }
 
-  const d1h  = st.flow_d1h_fmt  || "N/A";
-  const d24h = st.flow_d24h_fmt || "N/A";
-  const min7 = st.flow_7d_min != null ? fmtFlow(st.flow_7d_min) : "—";
-  const max7 = st.flow_7d_max != null ? fmtFlow(st.flow_7d_max) : "—";
-  const lyPct = lyPctBadge(st.ly_pct);
+  const wrap=document.createElement("div");
+  wrap.className="mcard";wrap.id=`card-${st.id}`;
+  wrap.style.position="relative";
+  // colored top border
+  wrap.style.borderTop=`3px solid ${color}`;
 
-  const card = document.createElement("div");
-  card.className = "card";
-  card.innerHTML = `
-    <div class="card-stripe ${status}"></div>
-    <div class="card-body">
-      <div class="station-header">
-        <div class="station-name">${st.name}</div>
-        <div class="station-id">USGS ${st.id}</div>
+  wrap.innerHTML=`
+    <div class="mcard-head">
+      <div class="mcard-name">${st.short||st.name}</div>
+      <div class="mcard-flow-row">
+        <div class="mcard-flow">${Number(st.current_flow).toLocaleString()}</div>
+        <div class="mcard-unit">cfs</div>
       </div>
-
-      ${hasData ? `
-      <div class="flow-row">
-        <div class="flow-number">${fmtFlow(st.current_flow)}</div>
-        <div class="flow-unit">cfs</div>
-        <div class="flow-trend">${st.trend_emoji || "➡️"}</div>
-      </div>
-
-      <div>
-        <span class="status-pill ${status}">${status}</span>
-      </div>
-
-      <div class="metrics-strip">
-        <div class="metric">
-          <div class="metric-label">Δ 1h</div>
-          <div class="metric-value ${metricClass(st.flow_d1h)}">${d1h}</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">Δ 24h</div>
-          <div class="metric-value ${metricClass(st.flow_d24h)}">${d24h}</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">7d Range</div>
-          <div class="metric-value">${min7}–${max7}</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">vs Last Yr</div>
-          <div class="metric-value ${metricClass(st.ly_pct)}">${lyPct}</div>
-        </div>
-      </div>
-
-      <div class="sparkline-wrap">
-        <canvas id="${cid}" height="72"></canvas>
-      </div>
-      ` : `
-      <div style="padding: 16px 0; color: var(--text-muted); font-style: italic; font-size:13px;">
-        ${st.error || "No data available"}
-      </div>
-      `}
     </div>
-    <div class="card-footer">
-      <span class="footer-time">${st.last_update || "—"}</span>
-      ${st.usgs_url ? `<a class="footer-link" href="${st.usgs_url}" target="_blank">View on USGS →</a>` : ""}
+    <div class="mcard-chart">
+      <div class="mcard-legend">
+        <div class="mcl-item"><div class="mcl-swatch hist"></div>Hist.</div>
+        <div class="mcl-item"><div class="mcl-swatch median"></div>Med.</div>
+        <div class="mcl-item"><div class="mcl-swatch current"></div>Now</div>
+      </div>
+      <canvas id="${cid}" style="width:100%;height:100%;"></canvas>
+    </div>
+    <div class="mcard-foot">
+      <div class="mcard-meta">Δ24h ${deltaChip(st.flow_d24h,st.flow_d24h_fmt)} &nbsp; 7d ${st.flow_7d_min!=null?Number(st.flow_7d_min).toLocaleString():"—"}–${st.flow_7d_max!=null?Number(st.flow_7d_max).toLocaleString():"—"}</div>
+      <div class="mcard-pills"><span class="status-pill ${st.status}">${st.status}</span></div>
     </div>
   `;
 
-  // Render sparkline after DOM insert
-  if (hasData && st.sparkline_flow?.length) {
-    requestAnimationFrame(() => {
-      const canvas = document.getElementById(cid);
-      if (!canvas) return;
-      const pts   = st.sparkline_flow;
-      const color = STATUS_COLORS[status] || "#7A8C6E";
+  requestAnimationFrame(()=>renderChart(cid,st,true));
+  return wrap;
+}
 
-      new Chart(canvas.getContext("2d"), {
-        type: "line",
-        data: {
-          labels: pts.map(p => p.t),
-          datasets: [{
-            data: pts.map(p => p.v),
-            borderColor: color,
-            borderWidth: 1.5,
-            pointRadius: 0,
-            fill: true,
-            backgroundColor: (ctx) => {
-              const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 72);
-              g.addColorStop(0, color + "55");
-              g.addColorStop(1, color + "06");
-              return g;
-            },
-            tension: 0.3,
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: false,
-          plugins: { legend: { display: false }, tooltip: { enabled: false } },
-          scales: {
-            x: { display: false },
-            y: {
-              display: true,
-              position: "right",
-              grid: { color: "rgba(90,62,34,0.1)", drawBorder: false },
-              ticks: {
-                maxTicksLimit: 3,
-                color: "#7A6248",
-                font: { size: 9, family: "'Roboto Condensed', sans-serif" },
-                callback: v => v >= 1000 ? (v/1000).toFixed(1)+"k" : v,
-              },
-            }
-          }
-        }
-      });
-    });
+/* ── Build full detail card ─────────────────────────────────────────────────── */
+function buildFullCard(st){
+  const hasData=!["error","no_data"].includes(st.status||"error");
+  if(!hasData){
+    const d=document.createElement("div");
+    d.style.cssText="background:rgba(255,255,255,.04);border:1px solid var(--bark-lt);border-radius:5px;padding:18px 20px;font-style:italic;color:var(--sand);font-size:13px;";
+    d.innerHTML=`<strong style="font-style:normal">${st.name}</strong> — ${st.error||"No data"}`;
+    return d;
   }
-
+  const cid=`full-${st.id}`;
+  const mc=v=>v==null?"":parseFloat(v)>0?"pos":parseFloat(v)<0?"neg":"";
+  const card=document.createElement("div");
+  card.className="scard";
+  card.innerHTML=`
+    <div class="scard-meta">
+      <div><div class="scard-name">${st.short||st.name}</div><div style="margin-top:3px"><span class="status-pill ${st.status}">${st.status}</span></div></div>
+      <div><div class="scard-flow">${Number(st.current_flow).toLocaleString()}</div><div class="scard-unit">cfs ${st.trend_emoji||""}</div></div>
+      <div class="scard-metrics">
+        <div class="scard-metric"><span class="scard-metric-label">Δ 1h</span><span class="scard-metric-val ${mc(st.flow_d1h)}">${st.flow_d1h_fmt||"N/A"}</span></div>
+        <div class="scard-metric"><span class="scard-metric-label">Δ 24h</span><span class="scard-metric-val ${mc(st.flow_d24h)}">${st.flow_d24h_fmt||"N/A"}</span></div>
+        <div class="scard-metric"><span class="scard-metric-label">7d Min</span><span class="scard-metric-val">${st.flow_7d_min!=null?Number(st.flow_7d_min).toLocaleString():"—"}</span></div>
+        <div class="scard-metric"><span class="scard-metric-label">7d Max</span><span class="scard-metric-val">${st.flow_7d_max!=null?Number(st.flow_7d_max).toLocaleString():"—"}</span></div>
+      </div>
+    </div>
+    <div class="scard-chart-wrap">
+      <div class="chart-legend">
+        <div class="cl-item"><div class="cl-swatch hist"></div>2005–2024</div>
+        <div class="cl-item"><div class="cl-swatch median"></div>Median</div>
+        <div class="cl-item"><div class="cl-swatch current"></div>This Year</div>
+      </div>
+      <canvas id="${cid}" style="width:100%;height:100%;"></canvas>
+    </div>
+    <div class="scard-footer">
+      <span class="scard-time">${st.last_update||"—"} · USGS ${st.id} · ${st.elev_ft?Number(st.elev_ft).toLocaleString():"?"}ft</span>
+      ${st.usgs_url?`<a class="scard-link" href="${st.usgs_url}" target="_blank">USGS →</a>`:""}
+    </div>`;
+  requestAnimationFrame(()=>renderChart(cid,st,false));
   return card;
 }
 
-// ── Main render ──────────────────────────────────────────────────────────────
-async function init() {
-  const dash = document.getElementById("dashboard");
+/* ── Leaflet map ─────────────────────────────────────────────────────────────── */
+let leafletMap=null;
+const markerMap={};
 
+function initMap(stations){
+  leafletMap=L.map("watershed-map",{
+    center:[37.72,-120.35],zoom:8,
+    zoomControl:true,scrollWheelZoom:false,
+    attributionControl:true,
+  });
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom:13,
+  }).addTo(leafletMap);
+
+  for(const st of stations){
+    if(!st.lat||!st.lon)continue;
+    const color=STATUS_COLOR[st.status]||"#7A6248";
+    const icon=L.divIcon({
+      className:"",
+      html:`<div style="width:13px;height:13px;border-radius:50%;background:${color};
+                border:2.5px solid rgba(255,255,255,0.9);
+                box-shadow:0 2px 8px rgba(0,0,0,0.5);"></div>`,
+      iconSize:[13,13],iconAnchor:[6.5,6.5],
+    });
+    const m=L.marker([st.lat,st.lon],{icon}).addTo(leafletMap);
+    m.bindPopup(`
+      <div style="font-family:'Roboto Condensed',sans-serif;min-width:140px;">
+        <div style="font-weight:700;font-size:12px;margin-bottom:3px;">${st.name}</div>
+        <div style="font-size:18px;font-weight:700;color:#1C1209;line-height:1;">${st.current_flow!=null?Number(st.current_flow).toLocaleString():"N/A"} <span style="font-size:11px;font-weight:400;color:#7A6248;">cfs</span></div>
+        <div style="margin-top:4px;"><span style="background:${color}22;color:${color};padding:1px 6px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:.12em;">${st.status}</span></div>
+        ${st.usgs_url?`<a href="${st.usgs_url}" target="_blank" style="display:block;margin-top:6px;font-size:9px;color:#2E7D8C;letter-spacing:.1em;text-transform:uppercase;">View on USGS →</a>`:""}
+      </div>
+    `);
+    markerMap[st.id]=m;
+  }
+}
+
+/* ── Leader lines ────────────────────────────────────────────────────────────── */
+function drawLeaderLines(stations){
+  const svg=document.getElementById("leader-svg");
+  svg.innerHTML="";
+  const layout=document.getElementById("radial-layout");
+  const mapEl=document.getElementById("watershed-map");
+  const layoutRect=layout.getBoundingClientRect();
+  const mapRect=mapEl.getBoundingClientRect();
+
+  for(const st of stations){
+    if(!st.lat||!st.lon)continue;
+    const cardEl=document.getElementById(`card-${st.id}`);
+    if(!cardEl)continue;
+    const cardRect=cardEl.getBoundingClientRect();
+    const isLeft=LEFT_IDS.includes(st.id);
+
+    // Card anchor point (right edge for left cards, left edge for right cards)
+    const cx=(isLeft
+      ? cardRect.right - layoutRect.left
+      : cardRect.left  - layoutRect.left);
+    const cy=cardRect.top - layoutRect.top + cardRect.height/2;
+
+    // Map dot position
+    if(!leafletMap)continue;
+    const mapPt=leafletMap.latLngToContainerPoint([st.lat,st.lon]);
+    const mx=mapRect.left - layoutRect.left + mapPt.x;
+    const my=mapRect.top  - layoutRect.top  + mapPt.y;
+
+    const color=STATUS_COLOR[st.status]||"#7A6248";
+
+    // Bezier control points
+    const midX=(cx+mx)/2;
+    const path=document.createElementNS("http://www.w3.org/2000/svg","path");
+    path.setAttribute("d",`M${cx},${cy} C${midX},${cy} ${midX},${my} ${mx},${my}`);
+    path.setAttribute("fill","none");
+    path.setAttribute("stroke",color);
+    path.setAttribute("stroke-width","1.5");
+    path.setAttribute("stroke-opacity","0.55");
+    path.setAttribute("stroke-dasharray","4,3");
+    svg.appendChild(path);
+
+    // Arrowhead at map end
+    const ang=Math.atan2(my-(cy+my)/2*0+my*0, mx-midX)*180/Math.PI;
+    const arr=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    arr.setAttribute("cx",mx);arr.setAttribute("cy",my);arr.setAttribute("r","4");
+    arr.setAttribute("fill",color);arr.setAttribute("opacity","0.75");
+    svg.appendChild(arr);
+  }
+}
+
+/* ── Main ─────────────────────────────────────────────────────────────────────── */
+async function init(){
+  const fullSection=document.getElementById("full-section");
   let data;
-  try {
-    const res = await fetch("data/processed/streamflow.json?_=" + Date.now());
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    data = await res.json();
-  } catch (e) {
-    dash.innerHTML = `<div class="error-card">
-      ⚠️ Could not load streamflow data. Run <code>python scripts/fetch.py</code> to generate it,
-      or wait for the next hourly GitHub Actions run.<br><br>
-      <small>${e.message}</small>
-    </div>`;
+  try{
+    const res=await fetch("data/processed/streamflow.json?_="+Date.now());
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    data=await res.json();
+  }catch(e){
+    fullSection.innerHTML=`<div style="padding:36px;color:var(--sand);font-style:italic;border:1px solid var(--bark-lt);border-radius:4px;">
+      ⚠️ Could not load data. Run <code style="background:rgba(255,255,255,.08);padding:2px 6px;border-radius:2px;">python scripts/fetch.py</code> first.
+      <br><small style="opacity:.6;font-style:normal;">${e.message}</small></div>`;
+    document.getElementById("radial-layout").style.display="none";
     return;
   }
 
-  // ── Header timestamp ──────────────────────────────────────────────────────
-  document.getElementById("last-updated").textContent =
-    `Updated ${data.generated_at_pt || "recently"}`;
+  // Summary
+  document.getElementById("last-updated").textContent=`Updated ${data.generated_at_pt||"recently"}`;
+  document.getElementById("f-hist").textContent=data.hist_range||"—";
+  document.getElementById("s-hist").textContent=data.hist_range||"—";
+  const stations=data.stations||[];
+  document.getElementById("s-active").textContent=stations.filter(s=>!["error","no_data"].includes(s.status)).length;
+  document.getElementById("s-total").textContent=stations.length;
+  document.getElementById("s-alerts").textContent=stations.filter(s=>["ELEVATED","HIGH","FLOOD"].includes(s.status)).length;
+  const mod=stations.find(s=>s.id==="11290000");
+  const mer=stations.find(s=>s.id==="11266500");
+  document.getElementById("s-modesto").textContent=mod?.current_flow!=null?Number(mod.current_flow).toLocaleString():"—";
+  document.getElementById("s-merced").textContent=mer?.current_flow!=null?Number(mer.current_flow).toLocaleString():"—";
 
-  const stations = data.stations || [];
+  // Init map
+  initMap(stations);
 
-  // ── Summary stats ─────────────────────────────────────────────────────────
-  const active = stations.filter(s => s.status && s.status !== "error" && s.status !== "no_data");
-  const alerts = stations.filter(s => ["ELEVATED","HIGH","FLOOD"].includes(s.status));
-  document.getElementById("sum-active").textContent = active.length;
-  document.getElementById("sum-total").textContent  = stations.length;
-  document.getElementById("sum-alerts").textContent = alerts.length;
+  // Build mini cards in left/right columns
+  const leftCol=document.getElementById("left-col");
+  const rightCol=document.getElementById("right-col");
 
-  const modesto = stations.find(s => s.id === "11290000");
-  const merced  = stations.find(s => s.id === "11266500");
-  document.getElementById("sum-modesto").innerHTML =
-    modesto?.current_flow != null
-      ? `${fmtFlow(modesto.current_flow)} <small style="font-size:14px;font-weight:400">cfs</small>`
-      : "—";
-  document.getElementById("sum-merced").innerHTML =
-    merced?.current_flow != null
-      ? `${fmtFlow(merced.current_flow)} <small style="font-size:14px;font-weight:400">cfs</small>`
-      : "—";
-
-  // ── Group by river ────────────────────────────────────────────────────────
-  const byRiver = {};
-  for (const st of stations) {
-    const r = st.river || "Other";
-    if (!byRiver[r]) byRiver[r] = [];
-    byRiver[r].push(st);
+  for(const id of LEFT_IDS){
+    const st=stations.find(s=>s.id===id);
+    if(st) leftCol.appendChild(buildMiniCard(st,"left"));
+  }
+  for(const id of RIGHT_IDS){
+    const st=stations.find(s=>s.id===id);
+    if(st) rightCol.appendChild(buildMiniCard(st,"right"));
   }
 
-  dash.innerHTML = "";
+  // Build full detail section below
+  fullSection.innerHTML="";
+  const byRiver={};
+  for(const st of stations){const r=st.river||"Other";if(!byRiver[r])byRiver[r]=[];byRiver[r].push(st);}
+  for(const river of RIVER_ORDER){
+    const group=byRiver[river];if(!group?.length)continue;
+    const sec=document.createElement("div");sec.className="river-section";
+    sec.innerHTML=`<div class="river-heading"><span style="font-size:15px">${RIVER_ICONS[river]||"🌊"}</span><h2>${river}${river==="Big Creek"?"" :" Watershed"}</h2><div class="river-line"></div></div><div class="full-grid"></div>`;
+    const grid=sec.querySelector(".full-grid");
+    for(const st of group)grid.appendChild(buildFullCard(st));
+    fullSection.appendChild(sec);
+  }
 
-  for (const river of RIVER_ORDER) {
-    const group = byRiver[river];
-    if (!group?.length) continue;
-
-    const section = document.createElement("div");
-    section.className = "river-section";
-    section.innerHTML = `
-      <div class="river-label">
-        <span class="river-icon">${RIVER_ICONS[river] || "🌊"}</span>
-        <h2>${river} River${river === "Big Creek" ? "" : " Watershed"}</h2>
-        <div class="river-label-line"></div>
-      </div>
-      <div class="station-grid"></div>
-    `;
-
-    const grid = section.querySelector(".station-grid");
-    for (const st of group) {
-      grid.appendChild(buildCard(st));
+  // Draw leader lines — wait for map tiles + cards to fully render
+  function tryDrawLines(attempts){
+    if(attempts<=0)return;
+    const mapEl=document.getElementById("watershed-map");
+    const mapRect=mapEl.getBoundingClientRect();
+    // Make sure map has real dimensions and leaflet is ready
+    if(mapRect.width>0 && leafletMap){
+      drawLeaderLines(stations);
+    } else {
+      requestAnimationFrame(()=>tryDrawLines(attempts-1));
     }
-    dash.appendChild(section);
   }
+  // First attempt after a short delay, then retry up to 30 frames
+  setTimeout(()=>tryDrawLines(30), 300);
+  leafletMap.on("load moveend zoomend",()=>drawLeaderLines(stations));
+  window.addEventListener("resize",()=>drawLeaderLines(stations));
 }
 
 init();

@@ -14,7 +14,11 @@ This dashboard puts you inside that pulse. Eight USGS stream gages. Three major 
 
 When a storm rolls into the Sierra, the rivers don't respond immediately. Water has to fall as snow at elevation, accumulate over weeks or months, then melt when temperatures rise — or in a big atmospheric river event, it falls as rain directly onto the snowpack, triggering a rapid, powerful pulse of runoff called a **rain-on-snow event**. These are the dangerous ones.
 
-The dashboard shows you where each river stands right now versus every water year since 2005. That grey spaghetti of historical lines? Each one is a full water year — a season of drought, a year of flood, an average spring. The bold teal line cutting through is *this year, right now.* When it climbs above the spaghetti, something unusual is happening.
+The dashboard has two views, stacked intentionally:
+
+**Top — 20-Year Historical Context.** Each mini chart is a spaghetti plot: every grey line is a full water year since 2005. The bold teal line is this year, right now. When it climbs above the spaghetti, something unusual is happening.
+
+**Bottom — Past 7 Days, Storm Pulse Detail.** The same stations, zoomed into 15-minute intervals. This is where you see the actual shape of a storm moving through — the sharp rise, the peak, the recession. Real flood forecaster territory.
 
 ### How Water Moves Through the Sierra
 
@@ -65,15 +69,19 @@ Watch a big storm event unfold in slow motion: a spike at Hetch Hetchy on Monday
 
 ---
 
-## 📊 Reading the Spaghetti Charts
+## 📊 Reading the Charts
 
-Each station shows a **spaghetti plot** — the same visualization used by meteorologists for ensemble weather forecasts and USGS scientists for flood outlooks.
+### Spaghetti Plots (top section — 20-year context)
 
 - 🩶 **Grey lines** — each one is a complete water year (2005–2024). The spread shows natural variability.
 - 🟤 **Dashed brown line** — the median across all years. A typical year.
 - 🟢 **Bold teal line** — this water year (Oct 2025 → now). How does this year stack up?
 
 When the teal line rides above the spaghetti mass, this year is historically wet. When it disappears into the bottom of the bundle, drought. When it punches straight up off the top — something exceptional is happening.
+
+### 7-Day Sparklines (bottom section — storm pulse detail)
+
+15-minute interval data straight from the USGS sensor network. This is where you see the actual shape of a storm event — the sharp rise as rain hits the watershed, the peak, and the gradual recession as the pulse works its way downstream. Hover any point for an exact timestamp and flow reading.
 
 **Flow status thresholds:**
 
@@ -84,7 +92,7 @@ When the teal line rides above the spaghetti mass, this year is historically wet
 | 🟠 HIGH | 1,000–5,000 cfs | Significant flood potential; monitor closely |
 | 🔴 FLOOD | > 5,000 cfs | Major flood event; infrastructure at risk |
 
-> One cubic foot per second (cfs) = 448 gallons per minute. The Tuolumne at Modesto during a major flood event can exceed 50,000 cfs — enough to fill an Olympic swimming pool every four seconds.
+> One cubic foot per second (cfs) = 448 gallons per minute. The Tuolumne at Modesto during a major flood can exceed 50,000 cfs — enough to fill an Olympic swimming pool every four seconds.
 
 ---
 
@@ -101,7 +109,7 @@ Every Monday, 6:00 AM PT
          ▼
   scripts/fetch.py calls USGS NWIS API
   ├── Instantaneous Values (7-day, 15-min intervals)
-  │     → current flow, Δ1h, Δ24h, 7-day range
+  │     → current flow, Δ1h, Δ24h, 7-day sparklines
   ├── Daily Values (Oct 1 → yesterday)
   │     → current water year spaghetti line
   └── Daily Values × 20 water years (2005–2024)
@@ -146,7 +154,7 @@ Python 3.9+ required. Zero external dependencies — pure stdlib.
 |---|---|
 | Data fetching | Python 3.12 · `urllib` · `zoneinfo` (stdlib only) |
 | Data source | [USGS NWIS](https://waterservices.usgs.gov/) — public, free, no key required |
-| Visualization | [Chart.js 4.4](https://www.chartjs.org/) — spaghetti plots, water-year x-axis |
+| Visualization | [Chart.js 4.4](https://www.chartjs.org/) — spaghetti plots + 7-day sparklines |
 | Map | [Leaflet](https://leafletjs.com/) + [OpenStreetMap](https://www.openstreetmap.org/) tiles |
 | Automation | GitHub Actions — weekly cron, no pip installs needed |
 | Hosting | GitHub Pages — free, static, globally cached |
@@ -156,7 +164,7 @@ Python 3.9+ required. Zero external dependencies — pure stdlib.
 
 ## 🗺 What's Next
 
-- [ ] **SNOTEL integration** — overlay Sierra snowpack (SWE) from NRCS alongside streamflow; the upstream leading indicator before the pulse arrives
+- [ ] **SNOTEL integration** — overlay Sierra snowpack (SWE) from NRCS; the upstream leading indicator before the pulse arrives
 - [ ] **Flood stage lines** — USGS official flood stage thresholds drawn directly on each chart
 - [ ] **Atmospheric river alerts** — auto-post to Bluesky when a major flow event is detected (porting from existing n8n workflow)
 - [ ] **Percentile bands** — shade the 10th/90th percentile envelope around the spaghetti for drought/flood framing

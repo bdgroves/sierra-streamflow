@@ -304,7 +304,7 @@ body{
 </div>
 
 <!-- RADIAL SECTION LABEL -->
-<div class="section-label">Watershed Overview — Click any chart to jump to details</div>
+<div class="section-label">Watershed Overview — 20-Year Historical Context</div>
 
 <!-- RADIAL MAP + MINI CHARTS -->
 <div class="radial-layout" id="radial-layout">
@@ -334,6 +334,7 @@ body{
 </div><!-- /radial-layout -->
 
 <!-- FULL DETAIL CHARTS BELOW -->
+<div class="section-label" style="margin-top:48px;">Past 7 Days — Storm Pulse Detail (15-min intervals)</div>
 <div class="full-section" id="full-section">
   <div style="padding:40px 0;text-align:center;color:var(--sand);font-style:italic;">⛰ Loading…</div>
 </div>
@@ -485,7 +486,7 @@ function buildMiniCard(st, side){
   return wrap;
 }
 
-/* ── Build full detail card ─────────────────────────────────────────────────── */
+/* ── Build 7-day sparkline card ─────────────────────────────────────────────── */
 function buildFullCard(st){
   const hasData=!["error","no_data"].includes(st.status||"error");
   if(!hasData){
@@ -496,6 +497,9 @@ function buildFullCard(st){
   }
   const cid=`full-${st.id}`;
   const mc=v=>v==null?"":parseFloat(v)>0?"pos":parseFloat(v)<0?"neg":"";
+  const color=STATUS_COLOR[st.status]||"#7A6248";
+  const pts=st.sparkline_flow||[];
+
   const card=document.createElement("div");
   card.className="scard";
   card.innerHTML=`
@@ -511,17 +515,88 @@ function buildFullCard(st){
     </div>
     <div class="scard-chart-wrap">
       <div class="chart-legend">
-        <div class="cl-item"><div class="cl-swatch hist"></div>2005–2024</div>
-        <div class="cl-item"><div class="cl-swatch median"></div>Median</div>
-        <div class="cl-item"><div class="cl-swatch current"></div>This Year</div>
+        <div class="cl-item"><div class="cl-swatch current" style="background:${color};height:2px;"></div>Discharge (15-min)</div>
       </div>
       <canvas id="${cid}" style="width:100%;height:100%;"></canvas>
     </div>
     <div class="scard-footer">
-      <span class="scard-time">${st.last_update||"—"} · USGS ${st.id} · ${st.elev_ft?Number(st.elev_ft).toLocaleString():"?"}ft</span>
+      <span class="scard-time">${st.last_update||"—"} · USGS ${st.id} · ${st.elev_ft?Number(st.elev_ft).toLocaleString():"?"}ft · 7-day interval</span>
       ${st.usgs_url?`<a class="scard-link" href="${st.usgs_url}" target="_blank">USGS →</a>`:""}
     </div>`;
-  requestAnimationFrame(()=>renderChart(cid,st,false));
+
+  requestAnimationFrame(()=>{
+    const canvas=document.getElementById(cid);
+    if(!canvas)return;
+    if(charts[cid]){charts[cid].destroy();delete charts[cid];}
+
+    // Build gradient fill
+    const ctx=canvas.getContext("2d");
+    const grad=ctx.createLinearGradient(0,0,0,148);
+    grad.addColorStop(0, color+"55");
+    grad.addColorStop(1, color+"08");
+
+    charts[cid]=new Chart(ctx,{
+      type:"line",
+      data:{datasets:[{
+        label:"Discharge",
+        data:pts.map(p=>({x:p.t,y:p.v})),
+        borderColor:color,
+        borderWidth:1.8,
+        pointRadius:0,
+        fill:true,
+        backgroundColor:grad,
+        tension:0.3,
+        parsing:false,
+      }]},
+      options:{
+        responsive:true,maintainAspectRatio:false,animation:false,
+        interaction:{mode:"index",intersect:false},
+        plugins:{
+          legend:{display:false},
+          tooltip:{
+            callbacks:{
+              title:items=>{
+                if(!items.length)return"";
+                const d=new Date(items[0].parsed.x);
+                return d.toLocaleDateString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+              },
+              label:i=>`${Number(i.parsed.y).toLocaleString()} cfs`,
+            },
+            backgroundColor:"rgba(250,245,236,0.97)",
+            titleColor:"#1C1209",bodyColor:"#3D2B12",
+            borderColor:"rgba(90,62,34,0.2)",borderWidth:1,
+            titleFont:{family:"'Roboto Condensed',sans-serif",size:10,weight:"700"},
+            bodyFont:{family:"'Roboto Condensed',sans-serif",size:10},
+          },
+        },
+        scales:{
+          x:{
+            type:"linear",
+            grid:{color:"rgba(90,62,34,0.07)"},
+            ticks:{
+              color:"#7A6248",
+              font:{size:9,family:"'Roboto Condensed',sans-serif"},
+              maxTicksLimit:7,
+              callback:val=>{
+                const d=new Date(val);
+                return d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+              },
+            },
+          },
+          y:{
+            position:"left",
+            grid:{color:"rgba(90,62,34,0.07)"},
+            ticks:{
+              color:"#7A6248",
+              font:{size:9,family:"'Roboto Condensed',sans-serif"},
+              maxTicksLimit:5,
+              callback:v=>v>=1000?(v/1000).toFixed(1)+"k":v,
+            },
+          },
+        },
+      },
+    });
+  });
   return card;
 }
 

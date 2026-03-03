@@ -157,7 +157,7 @@ def process_station(station: dict) -> dict:
 
     # ── 4. Formatted last-update timestamp ───────────────────────────────────
     last_dt = datetime.fromtimestamp(latest_t / 1000, tz=timezone.utc).astimezone(PT)
-    last_update = last_dt.strftime("%-m/%-d/%Y %-I:%M %p PT")
+    last_update = f"{last_dt.month}/{last_dt.day}/{last_dt.year} {last_dt.strftime('%I').lstrip('0') or '12'}:{last_dt.strftime('%M')} {last_dt.strftime('%p')} PT"
 
     return {
         **station,
@@ -206,7 +206,7 @@ def main():
     # ── Write output ──────────────────────────────────────────────────────────
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "generated_at_pt": datetime.now(PT).strftime("%-m/%-d/%Y %-I:%M %p PT"),
+        "generated_at_pt": (lambda d: f"{d.month}/{d.day}/{d.year} {d.strftime('%I').lstrip('0') or '12'}:{d.strftime('%M')} {d.strftime('%p')} PT")(datetime.now(PT)),
         "stations": results,
     }
     out_path = OUT_DIR / "streamflow.json"

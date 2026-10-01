@@ -276,6 +276,50 @@ body{
 }
 .site-footer p{font-family:'Roboto Condensed',sans-serif;font-size:11px;color:var(--text-muted);line-height:1.8;letter-spacing:.04em;}
 .site-footer a{color:var(--river-lt);text-decoration:none;}
+/* ── WATER YEAR / ENSO ── */
+.wy-band{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;margin-top:24px;}
+.wy-card,.enso-card{border:1px solid var(--bark-lt);border-radius:4px;padding:16px 20px;background:linear-gradient(135deg,rgba(46,125,140,.12),rgba(255,255,255,.02));}
+.enso-card{background:linear-gradient(135deg,rgba(194,59,34,.16),rgba(223,160,80,.06));border-color:rgba(194,59,34,.35);}
+.wy-kicker{font-family:'Roboto Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ochre-lt);}
+.wy-big{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;line-height:1.05;color:var(--parchment);margin:4px 0 6px;}
+.wy-text{font-size:13px;line-height:1.55;color:var(--parchment);opacity:.9;}
+.wy-text b{color:var(--ochre-lt);font-weight:600;}
+.enso-row{display:flex;gap:18px;align-items:center;margin-top:6px;}
+.enso-oni{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:#F08A5D;line-height:1;text-align:center;flex-shrink:0;}
+.enso-oni small{display:block;font-family:'Roboto Condensed',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--sand);font-weight:700;margin-top:4px;}
+.enso-jump{display:inline-block;margin-top:10px;font-family:'Roboto Condensed',sans-serif;font-size:11px;letter-spacing:.08em;color:var(--river-lt);text-decoration:none;}
+.band-key{display:flex;flex-wrap:wrap;gap:14px;margin:-6px 0 14px;font-family:'Roboto Condensed',sans-serif;font-size:10px;color:var(--sand);letter-spacing:.04em;}
+.band-key i{display:inline-block;width:18px;height:8px;margin-right:5px;vertical-align:0;border-radius:1px;}
+.k-band90{background:rgba(46,125,140,.18);} .k-band50{background:rgba(46,125,140,.38);}
+.k-med{height:0!important;border-top:1.5px dashed #8C6E45;} .k-prev{height:0!important;border-top:1.5px solid #B08A55;} .k-cur{height:0!important;border-top:2.5px solid #C23B22;}
+.map-note{font-family:'Roboto Condensed',sans-serif;font-size:10px;color:var(--sand);line-height:1.5;}
+.reg-chip{font-family:'Roboto Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;color:#7A6248;border:1px solid rgba(122,98,72,.35);border-radius:2px;padding:0 4px;margin-left:4px;}
+.status-pill.RECORD_LOW{background:#7A1F0E;color:#fff;} .status-pill.MUCH_BELOW{background:rgba(168,75,42,.22);color:#7A2800;}
+.status-pill.BELOW{background:rgba(223,160,80,.25);color:#7A4500;} .status-pill.NORMAL{background:rgba(43,168,152,.18);color:#145E55;}
+.status-pill.ABOVE{background:rgba(74,172,191,.22);color:#1B5C70;} .status-pill.MUCH_ABOVE{background:rgba(46,94,156,.22);color:#1F3A73;}
+.status-pill.RECORD_HIGH{background:#1F3A73;color:#fff;} .status-pill.UNKNOWN{background:rgba(122,98,72,.15);color:var(--text-muted);}
+/* review + enso panels */
+.review-wrap{overflow-x:auto;border:1px solid var(--bark-lt);border-radius:4px;}
+table.review{width:100%;border-collapse:collapse;font-family:'Roboto Condensed',sans-serif;font-size:12px;}
+.review th{text-align:right;padding:9px 12px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ochre-lt);border-bottom:1px solid var(--bark-lt);white-space:nowrap;}
+.review td{text-align:right;padding:8px 12px;border-bottom:1px solid rgba(61,43,18,.6);color:var(--parchment);white-space:nowrap;}
+.review th:first-child,.review td:first-child{text-align:left;}
+.review .pctbar{display:inline-block;height:6px;border-radius:3px;vertical-align:middle;margin-right:6px;}
+.review-note,.prose{font-size:13px;line-height:1.65;color:var(--parchment);opacity:.9;}
+.review-note{margin-top:10px;font-size:12px;color:var(--sand);}
+.enso-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;}
+.panel{background:rgba(255,255,255,.03);border:1px solid var(--bark-lt);border-radius:4px;padding:16px 18px;}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.panel-title{font-family:'Roboto Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sand);}
+.panel-chart{height:300px;position:relative;}
+.prose p{margin-bottom:10px;} .prose b{color:var(--ochre-lt);font-weight:600;}
+.seg{display:inline-flex;border:1px solid var(--bark-lt);border-radius:3px;overflow:hidden;}
+.seg button{font-family:'Roboto Condensed',sans-serif;font-size:10px;letter-spacing:.08em;padding:4px 10px;background:none;border:none;color:var(--sand);cursor:pointer;}
+.seg button.on{background:rgba(223,160,80,.2);color:var(--parchment);}
+.enso-key{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-family:'Roboto Condensed',sans-serif;font-size:10px;color:var(--sand);}
+.enso-key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px;}
+@media(max-width:1100px){.radial-layout{grid-template-columns:1fr;} .map-col{grid-column:1;grid-row:auto;position:static;} .left-col,.right-col{grid-column:1;} #leader-svg{display:none;}}
+@media(max-width:800px){.wy-band,.enso-grid{grid-template-columns:1fr;} .summary{flex-wrap:wrap;} .sum-stat{flex:1 1 45%;border-bottom:1px solid var(--bark-lt);} .page{padding:0 14px 60px;} .scard{grid-template-columns:1fr;} .scard-meta{border-right:none;border-bottom:1px solid rgba(90,62,34,.12);} .full-grid{grid-template-columns:1fr;} .panel-chart{height:240px;}}
 </style>
 </head>
 <body>
@@ -288,7 +332,7 @@ body{
   <div class="header-left">
     <div class="eyebrow">🏔 Sierra Nevada · California</div>
     <h1 class="site-title">Sierra <em>Streamflow</em></h1>
-    <p class="site-sub">Weekly discharge monitoring · current water year vs. 20-year historical record</p>
+    <p class="site-sub">Hourly discharge from eight USGS gages · each day measured against every year since 1981</p>
   </div>
   <div class="update-badge">
     <div class="pulse"></div>
@@ -296,17 +340,35 @@ body{
   </div>
 </header>
 
+<!-- WATER YEAR + ENSO -->
+<div class="wy-band">
+  <div class="wy-card">
+    <div class="wy-kicker" id="wy-kicker">Water Year</div>
+    <div class="wy-big" id="wy-big">—</div>
+    <div class="wy-text" id="wy-text">Loading…</div>
+  </div>
+  <div class="enso-card">
+    <div class="wy-kicker">El Niño Watch</div>
+    <div class="enso-row">
+      <div class="enso-oni"><span id="oni-val">—</span><small>ONI °C</small></div>
+      <div class="wy-text" id="enso-text">Loading…</div>
+    </div>
+    <a class="enso-jump" href="#enso">What past El Niños did to these rivers ↓</a>
+  </div>
+</div>
+
 <!-- SUMMARY -->
 <div class="summary">
-  <div class="sum-stat"><div class="sum-label">Stations Active</div><div class="sum-value" id="s-active">—</div><div class="sum-sub">of <span id="s-total">—</span> monitored</div></div>
-  <div class="sum-stat"><div class="sum-label">Elevated or Above</div><div class="sum-value" id="s-alerts">—</div><div class="sum-sub">flow alerts</div></div>
-  <div class="sum-stat"><div class="sum-label">Tuolumne at Modesto</div><div class="sum-value" id="s-modesto">—</div><div class="sum-sub">cfs · main stem</div></div>
-  <div class="sum-stat"><div class="sum-label">Merced at Yosemite</div><div class="sum-value" id="s-merced">—</div><div class="sum-sub">cfs · Pohono Bridge</div></div>
-  <div class="sum-stat"><div class="sum-label">Historical Record</div><div class="sum-value" id="s-hist">—</div><div class="sum-sub">water years</div></div>
+  <div class="sum-stat"><div class="sum-label">Gages reporting</div><div class="sum-value" id="s-active">—</div><div class="sum-sub">of <span id="s-total">—</span> · <span id="s-age">—</span></div></div>
+  <div class="sum-stat"><div class="sum-label">Below normal for the date</div><div class="sum-value" id="s-below">—</div><div class="sum-sub">under the 25th percentile</div></div>
+  <div class="sum-stat"><div class="sum-label">Normal</div><div class="sum-value" id="s-normal">—</div><div class="sum-sub">25th–75th percentile</div></div>
+  <div class="sum-stat"><div class="sum-label">Above normal</div><div class="sum-value" id="s-above">—</div><div class="sum-sub">over the 75th percentile</div></div>
+  <div class="sum-stat"><div class="sum-label">Record</div><div class="sum-value" id="s-hist">—</div><div class="sum-sub">daily means since Oct 1980</div></div>
 </div>
 
 <!-- RADIAL SECTION LABEL -->
-<div class="section-label">Watershed Overview — 20-Year Historical Context</div>
+<div class="section-label">Watershed Overview — this water year against the record</div>
+<div class="band-key"><span><i class="k-band90"></i>10th–90th percentile</span><span><i class="k-band50"></i>25th–75th</span><span><i class="k-med"></i>median</span><span><i class="k-prev"></i>last water year</span><span><i class="k-cur"></i>this water year</span></div>
 
 <!-- RADIAL MAP + MINI CHARTS -->
 <div class="radial-layout" id="radial-layout">
@@ -321,13 +383,8 @@ body{
   <div class="map-col">
     <div class="map-title">Gage Locations</div>
     <div id="watershed-map"></div>
-    <div class="map-legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#2BA898"></div>NORMAL</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#DFA050"></div>ELEVATED</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#A84B2A"></div>HIGH</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#C23B22"></div>FLOOD</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#7A6248"></div>NO DATA</div>
-    </div>
+    <div class="map-legend" id="map-legend"></div>
+    <div class="map-note">Percentile of today's flow among every same date since 1981. ▲ = flow set by dam releases.</div>
   </div>
 
   <!-- RIGHT COLUMN (high country / headwaters) -->
@@ -336,436 +393,383 @@ body{
 </div><!-- /radial-layout -->
 
 <!-- FULL DETAIL CHARTS BELOW -->
-<div class="section-label" style="margin-top:48px;">Past 7 Days — Storm Pulse Detail (15-min intervals)</div>
+<div class="section-label" style="margin-top:48px;">Past 7 Days — Storm Pulse Detail (hourly from 15-minute readings)</div>
 <div class="full-section" id="full-section">
   <div style="padding:40px 0;text-align:center;color:var(--sand);font-style:italic;">⛰ Loading…</div>
 </div>
 
+<!-- LAST WATER YEAR -->
+<div class="section-label" style="margin-top:56px;" id="review-label">Water Year in Review</div>
+<div class="review-wrap"><table class="review" id="review-table"><tbody><tr><td>Loading…</td></tr></tbody></table></div>
+<p class="review-note" id="review-note"></p>
+
+<!-- ENSO -->
+<div class="section-label" style="margin-top:56px;" id="enso">El Niño and the Sierra — what the record says</div>
+<div class="enso-grid">
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Water-year runoff as % of median, by ENSO phase</div>
+      <div class="seg" id="enso-seg"></div>
+    </div>
+    <div class="panel-chart"><canvas id="enso-chart"></canvas></div>
+    <div class="enso-key" id="enso-key"></div>
+  </div>
+  <div class="panel prose" id="enso-prose">Loading…</div>
+</div>
+
+<div class="enso-grid" style="margin-top:18px">
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title">When the snow lets go — date half the year's water had passed Happy Isles</div></div>
+    <div class="panel-chart"><canvas id="timing-chart"></canvas></div>
+  </div>
+  <div class="panel prose" id="timing-prose">Loading…</div>
+</div>
+
 <footer class="site-footer">
-  <p>Data: <a href="https://waterservices.usgs.gov/" target="_blank">USGS National Water Information System</a>
-     · Updated weekly via GitHub Actions · Historical record: <span id="f-hist">—</span>
-     · Map © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</p>
+  <p>Data: <a href="https://waterdata.usgs.gov/" target="_blank">USGS Water Data for the Nation</a> (Water Data APIs) ·
+     ENSO: <a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml" target="_blank">NOAA Climate Prediction Center</a> ·
+     Updated hourly via GitHub Actions · Record: <span id="f-hist">—</span><br>
+     <span id="f-health"></span>
+     · Map © <a href="https://www.esri.com/" target="_blank">Esri</a></p>
   <p>Tuolumne · Merced · Stanislaus · Big Creek</p>
 </footer>
 
 </div><!-- /page -->
 
 <script>
-/* ── Constants ─────────────────────────────────────────────────────────────── */
-const STATUS_COLOR = {
-  NORMAL:"#2BA898", ELEVATED:"#DFA050", HIGH:"#A84B2A",
-  FLOOD:"#C23B22",  error:"#7A6248",   no_data:"#7A6248"
+/* ── Status classes: percentile of today's flow among the same date since 1981 (USGS WaterWatch style) ── */
+const CLASSES = {
+  RECORD_LOW:  {c:"#7A1F0E", label:"Record low"},
+  MUCH_BELOW:  {c:"#A84B2A", label:"Much below normal", range:"< 10th"},
+  BELOW:       {c:"#DFA050", label:"Below normal", range:"10–24th"},
+  NORMAL:      {c:"#2BA898", label:"Normal", range:"25–75th"},
+  ABOVE:       {c:"#4AACBF", label:"Above normal", range:"76–90th"},
+  MUCH_ABOVE:  {c:"#2E5E9C", label:"Much above normal", range:"> 90th"},
+  RECORD_HIGH: {c:"#1F3A73", label:"Record high"},
+  UNKNOWN:     {c:"#7A6248", label:"No data"},
 };
-const RIVER_ORDER = ["Tuolumne","Merced","Stanislaus","Big Creek"];
+const cls = st => CLASSES[st.status] || CLASSES.UNKNOWN;
+const RIVER_ORDER = ["Merced","Tuolumne","Big Creek","Stanislaus"];
 const RIVER_ICONS = {Tuolumne:"🏔",Merced:"🌲",Stanislaus:"🌾","Big Creek":"💧"};
-
-// Which stations go left (valley/west) vs right (mountains/east)
-// Left: Modesto, LaGrange, Ripon, Merced Falls
-// Right: Hetch Hetchy, Grand Canyon, Yosemite, Big Creek
+// Left: valley and foothill gages (west); right: high country (east)
 const LEFT_IDS  = ["11290000","11289650","11303000","11284400"];
 const RIGHT_IDS = ["11276500","11274790","11266500","11264500"];
+const ENSO_COLORS = {"very strong El Niño":"#C23B22","strong El Niño":"#E2683C","moderate El Niño":"#E9A15F","weak El Niño":"#EBC79A",
+  "neutral":"#8C7B66","weak La Niña":"#A7CBD6","moderate La Niña":"#6FAFC2","strong La Niña":"#2E7D8C"};
+const fmtN = v => v == null ? "—" : Number(v).toLocaleString(undefined, {maximumFractionDigits: v < 10 ? 2 : v < 100 ? 1 : 0});
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-/* ── Water-year axis ────────────────────────────────────────────────────────── */
+/* ── Water-year axis ── */
 const WY_MONTHS = ["Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"];
 const WY_MDAYS  = [31,30,31,31,28,31,30,31,30,31,31,30];
-const WY_TICKS  = [];
-let _d=1; for(let m=0;m<12;m++){WY_TICKS.push({doy:_d,label:WY_MONTHS[m]});_d+=WY_MDAYS[m];}
-function doyLabel(doy){
-  let r=doy-1,mi=0;
-  while(mi<11&&r>=WY_MDAYS[mi]){r-=WY_MDAYS[mi];mi++;}
-  return `${WY_MONTHS[mi]} ${r+1}`;
-}
+const WY_TICKS  = []; let _d = 1; for (let m = 0; m < 12; m++) { WY_TICKS.push({doy:_d, label:WY_MONTHS[m]}); _d += WY_MDAYS[m]; }
+function doyLabel(doy){ let r = doy - 1, mi = 0; while (mi < 11 && r >= WY_MDAYS[mi]) { r -= WY_MDAYS[mi]; mi++; } return `${WY_MONTHS[mi]} ${r + 1}`; }
+const FONT = "'Roboto Condensed',sans-serif";
+const TIP = {backgroundColor:"rgba(250,245,236,0.97)", titleColor:"#1C1209", bodyColor:"#3D2B12", borderColor:"rgba(90,62,34,0.2)", borderWidth:1,
+  titleFont:{family:FONT,size:10,weight:"700"}, bodyFont:{family:FONT,size:10}};
 
-/* ── Chart helpers ──────────────────────────────────────────────────────────── */
-const charts={};
-function buildDatasets(st){
-  const ds=[];
-  for(const[wy,pts] of Object.entries(st.hist_years||{}))
-    ds.push({label:wy,data:pts.map(p=>({x:p.doy,y:p.v})),
-      borderColor:"rgba(180,155,120,0.2)",borderWidth:0.8,
-      pointRadius:0,fill:false,tension:0.3,parsing:false});
-  if((st.median_line||[]).length)
-    ds.push({label:"Median",data:st.median_line.map(p=>({x:p.doy,y:p.v})),
-      borderColor:"rgba(140,110,70,0.8)",borderWidth:1.4,borderDash:[5,4],
-      pointRadius:0,fill:false,tension:0.3,parsing:false});
-  if((st.cur_wy||[]).length)
-    ds.push({label:"This Year",data:st.cur_wy.map(p=>({x:p.doy,y:p.v})),
-      borderColor:"#1B7A6E",borderWidth:2.2,
-      pointRadius:0,fill:false,tension:0.3,parsing:false});
+const charts = {};
+function bandDatasets(st, H){
+  const b = (H.stations[st.id] || {}).bands || [];
+  const series = i => b.map((x, k) => x ? {x:k + 1, y:x[i]} : null).filter(Boolean);
+  const ds = [];
+  if (b.length) {
+    ds.push({label:"p10", data:series(1), borderWidth:0, pointRadius:0, fill:false, parsing:false});
+    ds.push({label:"p90", data:series(5), borderWidth:0, pointRadius:0, fill:"-1", backgroundColor:"rgba(46,125,140,0.14)", parsing:false});
+    ds.push({label:"p25", data:series(2), borderWidth:0, pointRadius:0, fill:false, parsing:false});
+    ds.push({label:"p75", data:series(4), borderWidth:0, pointRadius:0, fill:"-1", backgroundColor:"rgba(46,125,140,0.30)", parsing:false});
+    ds.push({label:"Median", data:series(3), borderColor:"#8C6E45", borderWidth:1.2, borderDash:[4,3], pointRadius:0, fill:false, parsing:false});
+  }
+  if ((st.prev_wy || []).length)
+    ds.push({label:`WY ${st._wy - 1}`, data:st.prev_wy.map(p => ({x:p[0], y:p[1]})), borderColor:"#B08A55", borderWidth:1.2, pointRadius:0, fill:false, parsing:false});
+  const cur = (st.cur_wy || []).map(p => ({x:p[0], y:p[1]}));
+  if (st.current_flow != null) cur.push({x:st._wyday, y:st.current_flow});
+  ds.push({label:`WY ${st._wy}`, data:cur, borderColor:"#C23B22", backgroundColor:"#C23B22", borderWidth:2.4,
+    pointRadius:c => c.dataIndex === cur.length - 1 ? 3.5 : 0, fill:false, parsing:false});
   return ds;
 }
 function axisOpts(mini){
   return {
-    x:{type:"linear",min:1,max:366,
-      grid:{color:"rgba(90,62,34,0.07)"},
-      ticks:{color:"#7A6248",font:{size:mini?8:9,family:"'Roboto Condensed',sans-serif"},
-        callback:val=>{const t=WY_TICKS.find(t=>Math.abs(t.doy-val)<8);return t?t.label:"";},},
-      afterBuildTicks:a=>{a.ticks=WY_TICKS.map(t=>({value:t.doy}));}},
-    y:{position:"left",grid:{color:"rgba(90,62,34,0.07)"},
-      ticks:{color:"#7A6248",font:{size:mini?8:9,family:"'Roboto Condensed',sans-serif"},
-        maxTicksLimit:mini?3:5,
-        callback:v=>v>=1000?(v/1000).toFixed(1)+"k":v}},
+    x:{type:"linear", min:1, max:366, grid:{color:"rgba(90,62,34,0.07)"},
+      ticks:{color:"#7A6248", font:{size:mini ? 8 : 9, family:FONT}, callback:v => (WY_TICKS.find(t => t.doy === v) || {}).label || ""},
+      afterBuildTicks:a => { a.ticks = WY_TICKS.filter((t, i) => !mini || i % 2 === 0).map(t => ({value:t.doy})); }},
+    y:{position:"left", beginAtZero:true, grid:{color:"rgba(90,62,34,0.07)"},
+      ticks:{color:"#7A6248", font:{size:mini ? 8 : 9, family:FONT}, maxTicksLimit:mini ? 3 : 5, callback:v => v >= 1000 ? (v / 1000).toFixed(1) + "k" : v}},
   };
 }
-function renderChart(canvasId,st,mini=false){
-  const canvas=document.getElementById(canvasId);
-  if(!canvas)return;
-  if(charts[canvasId]){charts[canvasId].destroy();delete charts[canvasId];}
-  charts[canvasId]=new Chart(canvas.getContext("2d"),{
-    type:"line",data:{datasets:buildDatasets(st)},
-    options:{
-      responsive:true,maintainAspectRatio:false,animation:false,
-      interaction:{mode:"index",intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          filter:i=>["This Year","Median"].includes(i.dataset.label),
-          callbacks:{
-            title:items=>items.length?doyLabel(items[0].parsed.x):"",
-            label:i=>`${i.dataset.label}: ${Number(i.parsed.y).toLocaleString()} cfs`,
-          },
-          backgroundColor:"rgba(250,245,236,0.97)",
-          titleColor:"#1C1209",bodyColor:"#3D2B12",
-          borderColor:"rgba(90,62,34,0.2)",borderWidth:1,
-          titleFont:{family:"'Roboto Condensed',sans-serif",size:10,weight:"700"},
-          bodyFont:{family:"'Roboto Condensed',sans-serif",size:10},
-        },
-      },
-      scales:axisOpts(mini),
-    },
-  });
+function renderBandChart(canvasId, st, H, mini){
+  const el = document.getElementById(canvasId); if (!el) return;
+  if (charts[canvasId]) charts[canvasId].destroy();
+  charts[canvasId] = new Chart(el.getContext("2d"), {type:"line", data:{datasets:bandDatasets(st, H)},
+    options:{responsive:true, maintainAspectRatio:false, animation:false, interaction:{mode:"index", intersect:false},
+      plugins:{legend:{display:false}, tooltip:{...TIP,
+        filter:i => ["Median", `WY ${st._wy}`, `WY ${st._wy - 1}`, "p10", "p90"].includes(i.dataset.label),
+        callbacks:{title:it => it.length ? doyLabel(it[0].parsed.x) : "",
+          label:i => `${i.dataset.label === "p10" ? "10th pct" : i.dataset.label === "p90" ? "90th pct" : i.dataset.label}: ${fmtN(i.parsed.y)} cfs`}}},
+      scales:axisOpts(mini)}});
 }
 
-/* ── Delta chip helper ─────────────────────────────────────────────────────── */
-function deltaChip(val,fmt){
-  if(val==null||fmt=="N/A")return`<span class="delta-chip flat">—</span>`;
-  const cls=val>0?"pos":val<0?"neg":"flat";
-  return`<span class="delta-chip ${cls}">${fmt}</span>`;
+function deltaChip(val, fmt){
+  if (val == null || fmt == "N/A") return `<span class="delta-chip flat">—</span>`;
+  return `<span class="delta-chip ${val > 0 ? "pos" : val < 0 ? "neg" : "flat"}">${fmt}</span>`;
 }
+const pctText = st => st.percentile == null ? "" : `${ord(st.percentile)} pct`;
+function ord(n){ const s = ["th","st","nd","rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
 
-/* ── Build mini card ────────────────────────────────────────────────────────── */
-function buildMiniCard(st, side){
-  const hasData=!["error","no_data"].includes(st.status||"error");
-  const cid=`mini-${st.id}`;
-  const color=STATUS_COLOR[st.status]||"#7A6248";
-
-  if(!hasData){
-    const d=document.createElement("div");
-    d.className="mcard-nodata";d.id=`card-${st.id}`;
-    d.innerHTML=`<strong style="font-style:normal">${st.short||st.name}</strong> — No data`;
-    return d;
-  }
-
-  const wrap=document.createElement("div");
-  wrap.className="mcard";wrap.id=`card-${st.id}`;
-  wrap.style.position="relative";
-  // colored top border
-  wrap.style.borderTop=`3px solid ${color}`;
-
-  wrap.innerHTML=`
+function buildMiniCard(st, H){
+  const c = cls(st), cid = `mini-${st.id}`;
+  const wrap = document.createElement("div");
+  wrap.className = "mcard"; wrap.id = `card-${st.id}`; wrap.style.position = "relative"; wrap.style.borderTop = `3px solid ${c.c}`;
+  wrap.innerHTML = `
     <div class="mcard-head">
-      <div class="mcard-name">${st.short||st.name}</div>
-      <div class="mcard-flow-row">
-        <div class="mcard-flow">${Number(st.current_flow).toLocaleString()}</div>
-        <div class="mcard-unit">cfs</div>
-      </div>
+      <div class="mcard-name" title="${esc(st.name)}">${esc(st.short)}${st.regulated ? '<span class="reg-chip" title="Flow set by dam releases upstream">▲ DAM</span>' : ""}</div>
+      <div class="mcard-flow-row"><div class="mcard-flow">${fmtN(st.current_flow)}</div><div class="mcard-unit">cfs</div></div>
     </div>
-    <div class="mcard-chart">
-      <div class="mcard-legend">
-        <div class="mcl-item"><div class="mcl-swatch hist"></div>Hist.</div>
-        <div class="mcl-item"><div class="mcl-swatch median"></div>Med.</div>
-        <div class="mcl-item"><div class="mcl-swatch current"></div>Now</div>
-      </div>
-      <canvas id="${cid}" style="width:100%;height:100%;"></canvas>
-    </div>
+    <div class="mcard-chart"><canvas id="${cid}" style="width:100%;height:100%;"></canvas></div>
     <div class="mcard-foot">
-      <div class="mcard-meta">Δ24h ${deltaChip(st.flow_d24h,st.flow_d24h_fmt)} &nbsp; 7d ${st.flow_7d_min!=null?Number(st.flow_7d_min).toLocaleString():"—"}–${st.flow_7d_max!=null?Number(st.flow_7d_max).toLocaleString():"—"}</div>
-      <div class="mcard-pills"><span class="status-pill ${st.status}">${st.status}</span></div>
-    </div>
-  `;
-
-  requestAnimationFrame(()=>renderChart(cid,st,true));
+      <div class="mcard-meta">Δ24h ${deltaChip(st.flow_d24h, st.flow_d24h_fmt)} &nbsp; ${pctText(st)}${st.stale ? " · stale" : ""}</div>
+      <div class="mcard-pills"><span class="status-pill ${st.status}">${c.label}</span></div>
+    </div>`;
+  requestAnimationFrame(() => renderBandChart(cid, st, H, true));
   return wrap;
 }
 
-/* ── Build 7-day sparkline card ─────────────────────────────────────────────── */
 function buildFullCard(st){
-  const hasData=!["error","no_data"].includes(st.status||"error");
-  if(!hasData){
-    const d=document.createElement("div");
-    d.style.cssText="background:rgba(255,255,255,.04);border:1px solid var(--bark-lt);border-radius:5px;padding:18px 20px;font-style:italic;color:var(--sand);font-size:13px;";
-    d.innerHTML=`<strong style="font-style:normal">${st.name}</strong> — ${st.error||"No data"}`;
-    return d;
-  }
-  const cid=`full-${st.id}`;
-  const mc=v=>v==null?"":parseFloat(v)>0?"pos":parseFloat(v)<0?"neg":"";
-  const color=STATUS_COLOR[st.status]||"#7A6248";
-  const pts=st.sparkline_flow||[];
-
-  const card=document.createElement("div");
-  card.className="scard";
-  card.innerHTML=`
+  const c = cls(st), cid = `full-${st.id}`, pts = st.spark || [];
+  const mc = v => v == null ? "" : v > 0 ? "pos" : v < 0 ? "neg" : "";
+  const card = document.createElement("div");
+  card.className = "scard";
+  card.innerHTML = `
     <div class="scard-meta">
-      <div><div class="scard-name">${st.short||st.name}</div><div style="margin-top:3px"><span class="status-pill ${st.status}">${st.status}</span></div></div>
-      <div><div class="scard-flow">${Number(st.current_flow).toLocaleString()}</div><div class="scard-unit">cfs ${st.trend_emoji||""}</div></div>
+      <div><div class="scard-name">${esc(st.short)}${st.regulated ? '<span class="reg-chip">▲ DAM</span>' : ""}</div><div style="margin-top:3px"><span class="status-pill ${st.status}">${c.label}</span></div></div>
+      <div><div class="scard-flow">${fmtN(st.current_flow)}</div><div class="scard-unit">cfs · ${st.trend || ""}</div></div>
       <div class="scard-metrics">
-        <div class="scard-metric"><span class="scard-metric-label">Δ 1h</span><span class="scard-metric-val ${mc(st.flow_d1h)}">${st.flow_d1h_fmt||"N/A"}</span></div>
-        <div class="scard-metric"><span class="scard-metric-label">Δ 24h</span><span class="scard-metric-val ${mc(st.flow_d24h)}">${st.flow_d24h_fmt||"N/A"}</span></div>
-        <div class="scard-metric"><span class="scard-metric-label">7d Min</span><span class="scard-metric-val">${st.flow_7d_min!=null?Number(st.flow_7d_min).toLocaleString():"—"}</span></div>
-        <div class="scard-metric"><span class="scard-metric-label">7d Max</span><span class="scard-metric-val">${st.flow_7d_max!=null?Number(st.flow_7d_max).toLocaleString():"—"}</span></div>
+        <div class="scard-metric"><span class="scard-metric-label">Δ 1h</span><span class="scard-metric-val ${mc(st.flow_d1h)}">${st.flow_d1h_fmt || "N/A"}</span></div>
+        <div class="scard-metric"><span class="scard-metric-label">Δ 24h</span><span class="scard-metric-val ${mc(st.flow_d24h)}">${st.flow_d24h_fmt || "N/A"}</span></div>
+        <div class="scard-metric"><span class="scard-metric-label">7d range</span><span class="scard-metric-val">${fmtN(st.flow_7d_min)}–${fmtN(st.flow_7d_max)}</span></div>
+        <div class="scard-metric"><span class="scard-metric-label">Stage</span><span class="scard-metric-val">${st.current_stage != null ? st.current_stage + " ft" : "—"}</span></div>
       </div>
     </div>
-    <div class="scard-chart-wrap">
-      <div class="chart-legend">
-        <div class="cl-item"><div class="cl-swatch current" style="background:${color};height:2px;"></div>Discharge (15-min)</div>
-      </div>
-      <canvas id="${cid}" style="width:100%;height:100%;"></canvas>
-    </div>
+    <div class="scard-chart-wrap"><canvas id="${cid}" style="width:100%;height:100%;"></canvas></div>
     <div class="scard-footer">
-      <span class="scard-time">${st.last_update||"—"} · USGS ${st.id} · ${st.elev_ft?Number(st.elev_ft).toLocaleString():"?"}ft · 7-day interval</span>
-      ${st.usgs_url?`<a class="scard-link" href="${st.usgs_url}" target="_blank">USGS →</a>`:""}
+      <span class="scard-time">${esc(st.last_update || "—")} · USGS ${st.id} · ${fmtN(st.elev_ft)} ft · ${fmtN(st.drain_sqmi)} sq mi${st.stale ? " · ⚠ not updated: " + esc(st.error || "") : ""}</span>
+      ${st.usgs_url ? `<a class="scard-link" href="${st.usgs_url}" target="_blank">USGS →</a>` : ""}
     </div>`;
-
-  requestAnimationFrame(()=>{
-    const canvas=document.getElementById(cid);
-    if(!canvas)return;
-    if(charts[cid]){charts[cid].destroy();delete charts[cid];}
-
-    // Build gradient fill
-    const ctx=canvas.getContext("2d");
-    const grad=ctx.createLinearGradient(0,0,0,148);
-    grad.addColorStop(0, color+"55");
-    grad.addColorStop(1, color+"08");
-
-    charts[cid]=new Chart(ctx,{
-      type:"line",
-      data:{datasets:[{
-        label:"Discharge",
-        data:pts.map(p=>({x:p.t,y:p.v})),
-        borderColor:color,
-        borderWidth:1.8,
-        pointRadius:0,
-        fill:true,
-        backgroundColor:grad,
-        tension:0.3,
-        parsing:false,
-      }]},
-      options:{
-        responsive:true,maintainAspectRatio:false,animation:false,
-        interaction:{mode:"index",intersect:false},
-        plugins:{
-          legend:{display:false},
-          tooltip:{
-            callbacks:{
-              title:items=>{
-                if(!items.length)return"";
-                const d=new Date(items[0].parsed.x);
-                return d.toLocaleDateString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
-              },
-              label:i=>`${Number(i.parsed.y).toLocaleString()} cfs`,
-            },
-            backgroundColor:"rgba(250,245,236,0.97)",
-            titleColor:"#1C1209",bodyColor:"#3D2B12",
-            borderColor:"rgba(90,62,34,0.2)",borderWidth:1,
-            titleFont:{family:"'Roboto Condensed',sans-serif",size:10,weight:"700"},
-            bodyFont:{family:"'Roboto Condensed',sans-serif",size:10},
-          },
-        },
-        scales:{
-          x:{
-            type:"linear",
-            grid:{color:"rgba(90,62,34,0.07)"},
-            ticks:{
-              color:"#7A6248",
-              font:{size:9,family:"'Roboto Condensed',sans-serif"},
-              maxTicksLimit:7,
-              callback:val=>{
-                const d=new Date(val);
-                return d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
-              },
-            },
-          },
-          y:{
-            position:"left",
-            grid:{color:"rgba(90,62,34,0.07)"},
-            ticks:{
-              color:"#7A6248",
-              font:{size:9,family:"'Roboto Condensed',sans-serif"},
-              maxTicksLimit:5,
-              callback:v=>v>=1000?(v/1000).toFixed(1)+"k":v,
-            },
-          },
-        },
-      },
-    });
+  requestAnimationFrame(() => {
+    const el = document.getElementById(cid); if (!el) return;
+    const ctx = el.getContext("2d"), g = ctx.createLinearGradient(0, 0, 0, 148);
+    g.addColorStop(0, c.c + "55"); g.addColorStop(1, c.c + "08");
+    charts[cid] = new Chart(ctx, {type:"line",
+      data:{datasets:[{label:"Discharge", data:pts.map(p => ({x:p[0], y:p[1]})), borderColor:c.c, borderWidth:1.8, pointRadius:0, fill:true, backgroundColor:g, tension:0.25, parsing:false}]},
+      options:{responsive:true, maintainAspectRatio:false, animation:false, interaction:{mode:"index", intersect:false},
+        plugins:{legend:{display:false}, tooltip:{...TIP, callbacks:{
+          title:it => it.length ? new Date(it[0].parsed.x).toLocaleString("en-US", {month:"short", day:"numeric", hour:"numeric", timeZone:"America/Los_Angeles"}) : "",
+          label:i => `${fmtN(i.parsed.y)} cfs`}}},
+        scales:{x:{type:"linear", grid:{color:"rgba(90,62,34,0.07)"}, ticks:{color:"#7A6248", font:{size:9, family:FONT}, maxTicksLimit:7,
+                  callback:v => new Date(v).toLocaleDateString("en-US", {month:"short", day:"numeric", timeZone:"America/Los_Angeles"})}},
+                y:{grid:{color:"rgba(90,62,34,0.07)"}, ticks:{color:"#7A6248", font:{size:9, family:FONT}, maxTicksLimit:5, callback:v => v >= 1000 ? (v / 1000).toFixed(1) + "k" : v}}}}});
   });
   return card;
 }
 
-/* ── Leaflet map ─────────────────────────────────────────────────────────────── */
-let leafletMap=null;
-const markerMap={};
-
+/* ── Map ── */
+let leafletMap = null;
 function initMap(stations){
-  leafletMap=L.map("watershed-map",{
-    center:[37.72,-120.35],zoom:8,
-    zoomControl:true,scrollWheelZoom:false,
-    attributionControl:true,
-  });
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom:13,
-  }).addTo(leafletMap);
-
-  for(const st of stations){
-    if(!st.lat||!st.lon)continue;
-    const color=STATUS_COLOR[st.status]||"#7A6248";
-    const icon=L.divIcon({
-      className:"",
-      html:`<div style="width:13px;height:13px;border-radius:50%;background:${color};
-                border:2.5px solid rgba(255,255,255,0.9);
-                box-shadow:0 2px 8px rgba(0,0,0,0.5);"></div>`,
-      iconSize:[13,13],iconAnchor:[6.5,6.5],
-    });
-    const m=L.marker([st.lat,st.lon],{icon}).addTo(leafletMap);
-    m.bindPopup(`
-      <div style="font-family:'Roboto Condensed',sans-serif;min-width:140px;">
-        <div style="font-weight:700;font-size:12px;margin-bottom:3px;">${st.name}</div>
-        <div style="font-size:18px;font-weight:700;color:#1C1209;line-height:1;">${st.current_flow!=null?Number(st.current_flow).toLocaleString():"N/A"} <span style="font-size:11px;font-weight:400;color:#7A6248;">cfs</span></div>
-        <div style="margin-top:4px;"><span style="background:${color}22;color:${color};padding:1px 6px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:.12em;">${st.status}</span></div>
-        ${st.usgs_url?`<a href="${st.usgs_url}" target="_blank" style="display:block;margin-top:6px;font-size:9px;color:#2E7D8C;letter-spacing:.1em;text-transform:uppercase;">View on USGS →</a>`:""}
-      </div>
-    `);
-    markerMap[st.id]=m;
+  leafletMap = L.map("watershed-map", {center:[37.78, -120.3], zoom:8, scrollWheelZoom:false});
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+    {attribution:"Tiles © Esri", maxZoom:15}).addTo(leafletMap);
+  for (const st of stations) {
+    const c = cls(st);
+    const shape = st.regulated
+      ? `<svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1 L15 14 L1 14 Z" fill="${c.c}" stroke="#fff" stroke-width="2"/></svg>`
+      : `<div style="width:14px;height:14px;border-radius:50%;background:${c.c};border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>`;
+    L.marker([st.lat, st.lon], {icon:L.divIcon({className:"", html:shape, iconSize:[16, 16], iconAnchor:[8, 8]})}).addTo(leafletMap)
+      .bindPopup(`<div style="font-family:${FONT};min-width:170px">
+        <div style="font-weight:700;font-size:12px;margin-bottom:3px">${esc(st.name)}</div>
+        <div style="font-size:18px;font-weight:700;line-height:1">${fmtN(st.current_flow)} <span style="font-size:11px;font-weight:400;color:#7A6248">cfs</span></div>
+        <div style="margin-top:4px"><span class="status-pill ${st.status}">${c.label}</span> <span style="font-size:10px;color:#7A6248">${pctText(st)}</span></div>
+        <div style="font-size:11px;color:#3D2B12;margin-top:5px;line-height:1.4">${esc(st.note || "")}</div>
+        <a href="${st.usgs_url}" target="_blank" style="display:block;margin-top:6px;font-size:9px;color:#2E7D8C;letter-spacing:.1em;text-transform:uppercase">View on USGS →</a></div>`);
   }
+  document.getElementById("map-legend").innerHTML = ["MUCH_BELOW","BELOW","NORMAL","ABOVE","MUCH_ABOVE"].map(k =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${CLASSES[k].c}"></div>${CLASSES[k].label}</div>`).join("");
 }
-
-/* ── Leader lines ────────────────────────────────────────────────────────────── */
 function drawLeaderLines(stations){
-  const svg=document.getElementById("leader-svg");
-  svg.innerHTML="";
-  const layout=document.getElementById("radial-layout");
-  const mapEl=document.getElementById("watershed-map");
-  const layoutRect=layout.getBoundingClientRect();
-  const mapRect=mapEl.getBoundingClientRect();
-
-  for(const st of stations){
-    if(!st.lat||!st.lon)continue;
-    const cardEl=document.getElementById(`card-${st.id}`);
-    if(!cardEl)continue;
-    const cardRect=cardEl.getBoundingClientRect();
-    const isLeft=LEFT_IDS.includes(st.id);
-
-    // Card anchor point (right edge for left cards, left edge for right cards)
-    const cx=(isLeft
-      ? cardRect.right - layoutRect.left
-      : cardRect.left  - layoutRect.left);
-    const cy=cardRect.top - layoutRect.top + cardRect.height/2;
-
-    // Map dot position
-    if(!leafletMap)continue;
-    const mapPt=leafletMap.latLngToContainerPoint([st.lat,st.lon]);
-    const mx=mapRect.left - layoutRect.left + mapPt.x;
-    const my=mapRect.top  - layoutRect.top  + mapPt.y;
-
-    const color=STATUS_COLOR[st.status]||"#7A6248";
-
-    // Bezier control points
-    const midX=(cx+mx)/2;
-    const path=document.createElementNS("http://www.w3.org/2000/svg","path");
-    path.setAttribute("d",`M${cx},${cy} C${midX},${cy} ${midX},${my} ${mx},${my}`);
-    path.setAttribute("fill","none");
-    path.setAttribute("stroke",color);
-    path.setAttribute("stroke-width","1.5");
-    path.setAttribute("stroke-opacity","0.55");
-    path.setAttribute("stroke-dasharray","4,3");
+  const svg = document.getElementById("leader-svg"); svg.innerHTML = "";
+  if (getComputedStyle(svg).display === "none" || !leafletMap) return;
+  const L0 = document.getElementById("radial-layout").getBoundingClientRect(), M = document.getElementById("watershed-map").getBoundingClientRect();
+  for (const st of stations) {
+    const card = document.getElementById(`card-${st.id}`); if (!card) continue;
+    const r = card.getBoundingClientRect(), left = LEFT_IDS.includes(st.id);
+    const cx = (left ? r.right : r.left) - L0.left, cy = r.top - L0.top + r.height / 2;
+    const p = leafletMap.latLngToContainerPoint([st.lat, st.lon]);
+    const mx = M.left - L0.left + p.x, my = M.top - L0.top + p.y, midX = (cx + mx) / 2, color = cls(st).c;
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", `M${cx},${cy} C${midX},${cy} ${midX},${my} ${mx},${my}`);
+    Object.entries({fill:"none", stroke:color, "stroke-width":"1.5", "stroke-opacity":"0.55", "stroke-dasharray":"4,3"}).forEach(([k, v]) => path.setAttribute(k, v));
     svg.appendChild(path);
-
-    // Arrowhead at map end
-    const ang=Math.atan2(my-(cy+my)/2*0+my*0, mx-midX)*180/Math.PI;
-    const arr=document.createElementNS("http://www.w3.org/2000/svg","circle");
-    arr.setAttribute("cx",mx);arr.setAttribute("cy",my);arr.setAttribute("r","4");
-    arr.setAttribute("fill",color);arr.setAttribute("opacity","0.75");
-    svg.appendChild(arr);
   }
 }
 
-/* ── Main ─────────────────────────────────────────────────────────────────────── */
+/* ── Water year in review ── */
+function renderReview(stations, H, wy){
+  const last = String(wy - 1);
+  document.getElementById("review-label").textContent = `Water Year ${last} in Review — Oct 1, ${wy - 2} to Sep 30, ${wy - 1}`;
+  const rows = stations.map(st => {
+    const h = H.stations[st.id]; if (!h) return "";
+    const r = h.annual[last]; if (!r) return `<tr><td>${esc(st.short)}</td><td colspan="5" style="text-align:left;color:#7A6248">incomplete year</td></tr>`;
+    const halves = Object.values(h.annual).map(a => a.half_doy).filter(Boolean).sort((a, b) => a - b);
+    const medHalf = halves[Math.floor(halves.length / 2)];
+    const shift = r.half_doy - medHalf;
+    const w = Math.min(160, r.pct_median) * 0.6;
+    const col = r.pct_median >= 125 ? "#4AACBF" : r.pct_median >= 75 ? "#2BA898" : "#DFA050";
+    return `<tr><td>${esc(st.short)}${st.regulated ? '<span class="reg-chip">▲ DAM</span>' : ""}</td>
+      <td>${fmtN(r.af)}</td><td><span class="pctbar" style="width:${w}px;background:${col}"></span>${r.pct_median}%</td>
+      <td>${fmtN(r.peak)} cfs · ${doyLabel(r.peak_doy)}</td><td>${doyLabel(r.half_doy)}</td>
+      <td>${shift === 0 ? "on time" : Math.abs(shift) + (shift < 0 ? " days early" : " days late")}</td></tr>`;
+  }).join("");
+  document.getElementById("review-table").innerHTML = `<thead><tr><th>Gage</th><th>Runoff (acre-ft)</th><th>% of median year</th><th>Peak day</th><th>Half the water by</th><th>vs typical</th></tr></thead><tbody>${rows}</tbody>`;
+  const hi = H.stations["11264500"]?.annual?.[last];
+  document.getElementById("review-note").textContent = hi
+    ? `At Happy Isles, with no dams above it, WY${last} came in at ${hi.pct_median}% of a median year. ` +
+      `Medians are over water years 1981–${last}. Dam-controlled gages (▲) reflect release schedules as much as weather.`
+    : "";
+}
+
+/* ── El Niño ── */
+const NATURAL = [["11264500","Happy Isles"],["11266500","Pohono Bridge"],["11284400","Big Creek"]];
+let ensoSite = "11264500";
+function renderEnso(H, S){
+  const ph = H.enso.phase || {}, djf = H.enso.djf || {};
+  const site = H.stations[ensoSite]; if (!site) return;
+  const years = Object.keys(site.annual).sort();
+  const vals = years.map(y => site.annual[y].pct_median);
+  const colors = years.map(y => ENSO_COLORS[ph[y]] || "#8C7B66");
+  if (charts.enso) charts.enso.destroy();
+  charts.enso = new Chart(document.getElementById("enso-chart").getContext("2d"), {type:"bar",
+    data:{labels:years, datasets:[{data:vals, backgroundColor:colors, borderWidth:0}]},
+    options:{responsive:true, maintainAspectRatio:false, animation:false,
+      plugins:{legend:{display:false}, tooltip:{...TIP, callbacks:{
+        title:it => `Water year ${it[0].label}`,
+        label:i => [`${i.parsed.y}% of median runoff`, `${ph[i.label] || "?"} (winter ONI ${djf[i.label] > 0 ? "+" : ""}${djf[i.label] ?? "?"})`]}}},
+      scales:{x:{grid:{display:false}, ticks:{color:"#C8A87A", font:{size:9, family:FONT}, maxRotation:0, autoSkip:true, maxTicksLimit:12}},
+              y:{grid:{color:"rgba(200,168,122,0.12)"}, ticks:{color:"#C8A87A", font:{size:9, family:FONT}, callback:v => v + "%"}}}}});
+  document.getElementById("enso-seg").innerHTML = NATURAL.filter(([id]) => H.stations[id]).map(([id, n]) =>
+    `<button class="${id === ensoSite ? "on" : ""}" data-site="${id}">${n}</button>`).join("");
+  document.querySelectorAll("#enso-seg button").forEach(b => b.onclick = () => { ensoSite = b.dataset.site; renderEnso(H, S); });
+  document.getElementById("enso-key").innerHTML = Object.entries(ENSO_COLORS).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("");
+
+  // Grouped medians, computed here from the same numbers the chart draws
+  const med = a => { const s = [...a].sort((x, y) => x - y); const n = s.length; return n ? (n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2) : null; };
+  const grp = f => years.filter(y => f(ph[y] || ""));
+  const strong = grp(p => /^(strong|very strong) El Niño/.test(p)), nina = grp(p => /La Niña/.test(p)), neutral = grp(p => p === "neutral");
+  const list = strong.map(y => `<b>${y}</b> ${site.annual[y].pct_median}%`).join(", ");
+  const top = [...years].sort((a, b) => site.annual[b].pct_median - site.annual[a].pct_median).slice(0, 5);
+  const name = (NATURAL.find(n => n[0] === ensoSite) || [])[1];
+  const sMax = strong.reduce((a, b) => site.annual[b].pct_median > site.annual[a].pct_median ? b : a, strong[0]);
+  const sMin = strong.reduce((a, b) => site.annual[b].pct_median < site.annual[a].pct_median ? b : a, strong[0]);
+  const latest = H.enso.latest;
+  document.getElementById("enso-prose").innerHTML = `
+    <p>NOAA issued an <b>El Niño Advisory</b> this summer. The Oceanic Niño Index reached <b>${latest ? (latest.oni > 0 ? "+" : "") + latest.oni : "—"}</b> for ${latest ? latest.season + " " + latest.year : ""}, and NOAA's September 10 outlook gave a better than 90% chance of a <b>very strong</b> event this winter.</p>
+    <p>At ${esc(name)}, the strong and very strong El Niño winters since 1981 produced: ${list}. Their median is <b>${med(strong.map(y => site.annual[y].pct_median))}%</b> of a typical year, against ${med(nina.map(y => site.annual[y].pct_median))}% for La Niña years and ${med(neutral.map(y => site.annual[y].pct_median))}% for neutral ones.</p>
+    <p>So the record leans wet, but not reliably. The wettest of those winters, <b>${sMax}</b>, ran ${site.annual[sMax].pct_median}% of normal; the driest, <b>${sMin}</b>, only ${site.annual[sMin].pct_median}%. The five biggest years here (${top.map(y => `${y} <span style="color:#C8A87A">${(ph[y] || "").replace(" El Niño", " Niño")}</span>`).join(", ")}) are not all El Niño years. The central Sierra sits near the hinge between the wetter south and the drier north that El Niño tends to bring.</p>
+    <p style="font-size:11px;color:#C8A87A">Phase is the December–February ONI for each water year (≥2.0 very strong, 1.5–2.0 strong). Only gages with no dams above them are shown.</p>`;
+}
+
+function renderTiming(H){
+  const site = H.stations["11264500"]; if (!site) return;
+  const pts = Object.entries(site.annual).filter(([, r]) => r.half_doy).map(([y, r]) => ({x:+y, y:r.half_doy}));
+  const n = pts.length, mx = pts.reduce((s, p) => s + p.x, 0) / n, my = pts.reduce((s, p) => s + p.y, 0) / n;
+  const b = pts.reduce((s, p) => s + (p.x - mx) * (p.y - my), 0) / pts.reduce((s, p) => s + (p.x - mx) ** 2, 0);
+  const x0 = pts[0].x, x1 = pts[n - 1].x;
+  if (charts.timing) charts.timing.destroy();
+  charts.timing = new Chart(document.getElementById("timing-chart").getContext("2d"), {type:"scatter",
+    data:{datasets:[
+      {label:"Half-flow date", data:pts, backgroundColor:pts.map(p => ENSO_COLORS[(H.enso.phase || {})[p.x]] || "#8C7B66"), pointRadius:4},
+      {type:"line", label:"Trend", data:[{x:x0, y:my + b * (x0 - mx)}, {x:x1, y:my + b * (x1 - mx)}], borderColor:"#F4EDD8", borderDash:[5, 4], borderWidth:1.4, pointRadius:0}]},
+    options:{responsive:true, maintainAspectRatio:false, animation:false,
+      plugins:{legend:{display:false}, tooltip:{...TIP, callbacks:{label:i => i.datasetIndex ? "trend" : `WY${i.parsed.x}: ${doyLabel(i.parsed.y)}`}}},
+      scales:{x:{min:x0 - 1, max:x1 + 1, grid:{display:false}, ticks:{color:"#C8A87A", font:{size:9, family:FONT}, callback:v => String(v)}},
+              y:{grid:{color:"rgba(200,168,122,0.12)"}, ticks:{color:"#C8A87A", font:{size:9, family:FONT}, callback:v => doyLabel(v)}}}}});
+  const total = Math.round(b * (x1 - x0));
+  document.getElementById("timing-prose").innerHTML = `
+    <p>Each dot is a water year: the day by which half of that year's water had flowed past Happy Isles. In a snow-fed river that date tracks the melt, so it moves with spring heat and with how much fell as snow rather than rain.</p>
+    <p>The trend line moves <b>${Math.abs(b * 10).toFixed(1)} days ${b < 0 ? "earlier" : "later"} per decade</b>, about ${Math.abs(total)} days over ${x1 - x0} years. Year-to-year swings are much bigger than the trend, so read it as a lean, not a rule.</p>
+    <p style="font-size:11px;color:#C8A87A">Dots are coloured by ENSO phase. WY${x1}: ${doyLabel(site.annual[x1].half_doy)}.</p>`;
+}
+
+/* ── Main ── */
 async function init(){
-  const fullSection=document.getElementById("full-section");
-  let data;
-  try{
-    const res=await fetch("data/processed/streamflow.json?_="+Date.now());
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    data=await res.json();
-  }catch(e){
-    fullSection.innerHTML=`<div style="padding:36px;color:var(--sand);font-style:italic;border:1px solid var(--bark-lt);border-radius:4px;">
-      ⚠️ Could not load data. Run <code style="background:rgba(255,255,255,.08);padding:2px 6px;border-radius:2px;">python scripts/fetch.py</code> first.
-      <br><small style="opacity:.6;font-style:normal;">${e.message}</small></div>`;
-    document.getElementById("radial-layout").style.display="none";
+  const full = document.getElementById("full-section");
+  let S, H;
+  try {
+    const [a, b] = await Promise.all([fetch("data/processed/streamflow.json?_=" + Date.now()), fetch("data/processed/history.json?_=" + Date.now())]);
+    if (!a.ok) throw new Error(`HTTP ${a.status}`);
+    S = await a.json(); H = b.ok ? await b.json() : {stations:{}, enso:{}};
+  } catch (e) {
+    full.innerHTML = `<div style="padding:36px;color:var(--sand);font-style:italic">⚠️ Could not load data. <small>${esc(e.message)}</small></div>`;
+    document.getElementById("radial-layout").style.display = "none";
     return;
   }
+  const stations = S.stations || [];
+  stations.forEach(st => { st._wy = S.water_year; st._wyday = S.wy_day; });
 
-  // Summary
-  document.getElementById("last-updated").textContent=`Updated ${data.generated_at_pt||"recently"}`;
-  document.getElementById("f-hist").textContent=data.hist_range||"—";
-  document.getElementById("s-hist").textContent=data.hist_range||"—";
-  const stations=data.stations||[];
-  document.getElementById("s-active").textContent=stations.filter(s=>!["error","no_data"].includes(s.status)).length;
-  document.getElementById("s-total").textContent=stations.length;
-  document.getElementById("s-alerts").textContent=stations.filter(s=>["ELEVATED","HIGH","FLOOD"].includes(s.status)).length;
-  const mod=stations.find(s=>s.id==="11290000");
-  const mer=stations.find(s=>s.id==="11266500");
-  document.getElementById("s-modesto").textContent=mod?.current_flow!=null?Number(mod.current_flow).toLocaleString():"—";
-  document.getElementById("s-merced").textContent=mer?.current_flow!=null?Number(mer.current_flow).toLocaleString():"—";
+  // header bands
+  document.getElementById("last-updated").textContent = `Updated ${S.generated_at_pt || "recently"}`;
+  document.getElementById("wy-kicker").textContent = `Water Year ${S.water_year} · day ${S.wy_day}`;
+  const startYr = S.water_year - 1;
+  document.getElementById("wy-big").textContent = S.wy_day <= 14 ? `A new water year` : `Day ${S.wy_day} of 365`;
+  const hi = H.stations?.["11264500"]?.annual?.[String(S.water_year - 1)];
+  document.getElementById("wy-text").innerHTML = (S.wy_day <= 14
+    ? `Water year ${S.water_year} began on October 1, ${startYr}: the hydrologist's new year, timed to the end of the dry season. The red line on each chart starts over today.`
+    : `Water year ${S.water_year} runs October 1, ${startYr} to September 30, ${S.water_year}.`) +
+    (hi ? ` Last year at Happy Isles: <b>${hi.pct_median}% of a median year</b>.` : "");
+  const L = H.enso?.latest || S.enso?.latest;
+  document.getElementById("oni-val").textContent = L ? (L.oni > 0 ? "+" : "") + L.oni.toFixed(1) : "—";
+  document.getElementById("enso-text").innerHTML = L
+    ? `${L.oni >= 0.5 ? "<b>El Niño conditions</b>" : L.oni <= -0.5 ? "<b>La Niña conditions</b>" : "ENSO-neutral"} in the ${L.season} ${L.year} Oceanic Niño Index. NOAA's September 10 outlook: a better than 90% chance of a very strong El Niño this winter. Big El Niños have brought the Sierra its floods, and also a dry year.`
+    : "ENSO data unavailable.";
 
-  // Init map
+  // summary
+  const live = stations.filter(s => !s.stale && s.status !== "UNKNOWN");
+  document.getElementById("s-active").textContent = live.length;
+  document.getElementById("s-total").textContent = stations.length;
+  const ageMin = Math.round((Date.now() - Math.max(...stations.map(s => s.last_t || 0))) / 60000);
+  document.getElementById("s-age").textContent = ageMin < 120 ? `${ageMin} min old` : `${Math.round(ageMin / 60)} h old`;
+  document.getElementById("s-below").textContent = live.filter(s => ["RECORD_LOW","MUCH_BELOW","BELOW"].includes(s.status)).length;
+  document.getElementById("s-normal").textContent = live.filter(s => s.status === "NORMAL").length;
+  document.getElementById("s-above").textContent = live.filter(s => ["ABOVE","MUCH_ABOVE","RECORD_HIGH"].includes(s.status)).length;
+  document.getElementById("s-hist").textContent = (S.record || "").replace("WY", "");
+  document.getElementById("f-hist").textContent = S.record || "—";
+  const issues = Object.entries(S.health?.issues || {});
+  document.getElementById("f-health").textContent = issues.length
+    ? `⚠ ${issues.length} issue(s) on the last run: ${issues.map(([k, v]) => k).join(", ")} — showing last good data`
+    : `All ${stations.length} gages updated on the last run.`;
+
   initMap(stations);
+  const lc = document.getElementById("left-col"), rc = document.getElementById("right-col");
+  LEFT_IDS.forEach(id => { const st = stations.find(s => s.id === id); if (st) lc.appendChild(buildMiniCard(st, H)); });
+  RIGHT_IDS.forEach(id => { const st = stations.find(s => s.id === id); if (st) rc.appendChild(buildMiniCard(st, H)); });
 
-  // Build mini cards in left/right columns
-  const leftCol=document.getElementById("left-col");
-  const rightCol=document.getElementById("right-col");
-
-  for(const id of LEFT_IDS){
-    const st=stations.find(s=>s.id===id);
-    if(st) leftCol.appendChild(buildMiniCard(st,"left"));
-  }
-  for(const id of RIGHT_IDS){
-    const st=stations.find(s=>s.id===id);
-    if(st) rightCol.appendChild(buildMiniCard(st,"right"));
-  }
-
-  // Build full detail section below
-  fullSection.innerHTML="";
-  const byRiver={};
-  for(const st of stations){const r=st.river||"Other";if(!byRiver[r])byRiver[r]=[];byRiver[r].push(st);}
-  for(const river of RIVER_ORDER){
-    const group=byRiver[river];if(!group?.length)continue;
-    const sec=document.createElement("div");sec.className="river-section";
-    sec.innerHTML=`<div class="river-heading"><span style="font-size:15px">${RIVER_ICONS[river]||"🌊"}</span><h2>${river}${river==="Big Creek"?"" :" Watershed"}</h2><div class="river-line"></div></div><div class="full-grid"></div>`;
-    const grid=sec.querySelector(".full-grid");
-    for(const st of group)grid.appendChild(buildFullCard(st));
-    fullSection.appendChild(sec);
+  full.innerHTML = "";
+  const byRiver = {};
+  stations.forEach(st => (byRiver[st.river] = byRiver[st.river] || []).push(st));
+  for (const river of RIVER_ORDER) {
+    const group = byRiver[river]; if (!group?.length) continue;
+    const sec = document.createElement("div"); sec.className = "river-section";
+    sec.innerHTML = `<div class="river-heading"><span style="font-size:15px">${RIVER_ICONS[river] || "🌊"}</span><h2>${river}${river === "Big Creek" ? "" : " Watershed"}</h2><div class="river-line"></div></div><div class="full-grid"></div>`;
+    group.forEach(st => sec.querySelector(".full-grid").appendChild(buildFullCard(st)));
+    full.appendChild(sec);
   }
 
-  // Draw leader lines — wait for map tiles + cards to fully render
-  function tryDrawLines(attempts){
-    if(attempts<=0)return;
-    const mapEl=document.getElementById("watershed-map");
-    const mapRect=mapEl.getBoundingClientRect();
-    // Make sure map has real dimensions and leaflet is ready
-    if(mapRect.width>0 && leafletMap){
-      drawLeaderLines(stations);
-    } else {
-      requestAnimationFrame(()=>tryDrawLines(attempts-1));
-    }
-  }
-  // First attempt after a short delay, then retry up to 30 frames
-  setTimeout(()=>tryDrawLines(30), 300);
-  leafletMap.on("load moveend zoomend",()=>drawLeaderLines(stations));
-  window.addEventListener("resize",()=>drawLeaderLines(stations));
+  renderReview(stations, H, S.water_year);
+  if (H.enso?.phase) { renderEnso(H, S); renderTiming(H); }
+
+  const tryLines = n => { if (n <= 0) return; const r = document.getElementById("watershed-map").getBoundingClientRect(); r.width > 0 && leafletMap ? drawLeaderLines(stations) : requestAnimationFrame(() => tryLines(n - 1)); };
+  setTimeout(() => tryLines(30), 300);
+  leafletMap.on("load moveend zoomend", () => drawLeaderLines(stations));
+  window.addEventListener("resize", () => drawLeaderLines(stations));
 }
-
 init();
 </script>
 </body>

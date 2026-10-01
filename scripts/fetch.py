@@ -331,6 +331,50 @@ def fetch_oni():
     return djf, latest
 
 
+OUTLOOK_URL = "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml"
+MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December"
+
+
+def fetch_outlook():
+    """NOAA CPC's current ENSO Diagnostic Discussion: alert status, synopsis, issue date.
+
+    CPC issues it monthly (the second Thursday), so the page quotes NOAA's own
+    latest words instead of a sentence typed in September."""
+    import html as _html
+    import re
+    page = get(OUTLOOK_URL, raw=True)
+    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", page, flags=re.S | re.I)
+    text = _html.unescape(re.sub(r"<[^>]+>", " ", text))
+    text = re.sub(r"\s+", " ", text)
+    status = re.search(r"ENSO Alert System Status:\s*(.+?)(?=\s+Synopsis:|\s{2,}|$)", text)
+    synopsis = re.search(r"Synopsis:\s*(.+?\.)(?=\s+[A-Z][a-z]|\s*$)", text)
+    issued = re.search(rf"\b(\d{{1,2}} (?:{MONTHS}) \d{{4}})\b", text)
+    if not (status and synopsis):
+        raise ValueError("could not find the status and synopsis on the CPC page")
+    return {"status": status.group(1).strip()[:120], "synopsis": synopsis.group(1).strip()[:400],
+            "issued": issued.group(1) if issued else None, "url": OUTLOOK_URL}
+
+
+def storm_check(stations):
+    """Gages with no dams above them that look like a storm is arriving.
+
+    Used to open a GitHub issue the first time it happens each water year, so
+    someone looks at how the percentile labels and charts behave in a real storm."""
+    hits = []
+    for st in stations:
+        if st.get("regulated") or st.get("stale"):
+            continue
+        flow, d24 = st.get("current_flow") or 0, st.get("flow_d24h")
+        if d24 is None:
+            continue
+        before = flow - d24
+        jumped = d24 > 0 and (before <= 0.5 and flow >= 2 or before > 0.5 and flow >= 2 * before)
+        high = st.get("status") in ("ABOVE", "MUCH_ABOVE", "RECORD_HIGH") and d24 > 0
+        if jumped or high:
+            hits.append({"id": st["id"], "short": st["short"], "flow": flow, "d24h": d24, "status": st.get("status")})
+    return hits
+
+
 def enso_phase(oni):
     if oni is None:
         return None
@@ -408,6 +452,32 @@ def current(station, band_today, cur_wy, today):
     }
 
 
+# ── Commit throttle ──────────────────────────────────────────────────────────
+def quiet(out, prev):
+    """True when nothing worth committing has happened.
+
+    The job runs hourly, and every write is a git commit. In a dry spell that's
+    24 near-identical commits a day, so: rewrite at most every 3 hours unless a
+    status changes, a gage moves more than 10%, a storm is flagged, a gage goes
+    stale or recovers, NOAA posts a new outlook, or the day rolls over."""
+    if not prev or not prev.get("generated_at"):
+        return False
+    age = datetime.now(timezone.utc) - datetime.fromisoformat(prev["generated_at"])
+    if age >= timedelta(hours=3) or out["wy_day"] != prev.get("wy_day") or out["storm"]:
+        return False
+    if (out["enso"].get("outlook") or {}).get("issued") != ((prev.get("enso") or {}).get("outlook") or {}).get("issued"):
+        return False
+    old = {s["id"]: s for s in prev.get("stations", [])}
+    for st in out["stations"]:
+        p = old.get(st["id"])
+        if not p or p.get("status") != st.get("status") or bool(p.get("stale")) != bool(st.get("stale")):
+            return False
+        a, b = p.get("current_flow") or 0, st.get("current_flow") or 0
+        if abs(b - a) > max(1.0, 0.10 * a):
+            return False
+    return True
+
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 def main():
     now_pt = datetime.now(PT)
@@ -435,6 +505,19 @@ def main():
             h = json.loads(old.read_text())
             djf = {int(k): v for k, v in h.get("enso", {}).get("djf", {}).items()}
             oni_latest = h.get("enso", {}).get("latest")
+
+    prev_full = {}
+    if prev_path.exists():
+        try:
+            prev_full = json.loads(prev_path.read_text())
+        except Exception:
+            prev_full = {}
+    try:
+        outlook = fetch_outlook()
+        print(f"  NOAA: {outlook['status']} ({outlook['issued']})")
+    except Exception as e:
+        print(f"  [warn] NOAA outlook: {e}", file=sys.stderr)
+        outlook = (prev_full.get("enso") or {}).get("outlook")
 
     stations, hist_out, health = [], {}, {}
     for st in STATIONS:
@@ -481,13 +564,18 @@ def main():
                    # (the key itself is never written anywhere)
                    "api_key": bool(API_KEY), "rate_limit": RATE.get("X-RateLimit-Limit"),
                    "rate_remaining": RATE.get("X-RateLimit-Remaining")},
-        "enso": {"latest": oni_latest, "phase": enso_phase(oni_latest["oni"]) if oni_latest else None},
+        "enso": {"latest": oni_latest, "phase": enso_phase(oni_latest["oni"]) if oni_latest else None,
+                 "outlook": outlook},
+        "storm": storm_check(stations),
         "stations": stations,
     }
     if ok == 0 and prev_out:
         print("  ✗ every gage failed — keeping the previous streamflow.json", file=sys.stderr)
         sys.exit(1)
-    (OUT / "streamflow.json").write_text(json.dumps(out, separators=(",", ":")))
+    if quiet(out, prev_full) and "--always" not in sys.argv:
+        print("  quiet hour: no meaningful change in the last 3 hours, not rewriting streamflow.json")
+    else:
+        (OUT / "streamflow.json").write_text(json.dumps(out, separators=(",", ":")))
 
     if hist_out:
         old = {}
@@ -503,7 +591,16 @@ def main():
                      "latest": oni_latest},
             "stations": {**old, **hist_out},
         }
-        (OUT / "history.json").write_text(json.dumps(hist, separators=(",", ":")))
+        same = False
+        if (OUT / "history.json").exists():
+            try:
+                prev_h = json.loads((OUT / "history.json").read_text())
+                same = {k: v for k, v in prev_h.items() if k != "generated_at"} == \
+                       json.loads(json.dumps({k: v for k, v in hist.items() if k != "generated_at"}))
+            except Exception:
+                same = False
+        if not same:     # rewrite only when something in it changed (it's 160 KB and committed)
+            (OUT / "history.json").write_text(json.dumps(hist, separators=(",", ":")))
     print(f"✅ {ok}/{len(stations)} gages current · streamflow.json "
           f"{(OUT / 'streamflow.json').stat().st_size // 1024} KB · history.json "
           f"{(OUT / 'history.json').stat().st_size // 1024 if (OUT / 'history.json').exists() else 0} KB")

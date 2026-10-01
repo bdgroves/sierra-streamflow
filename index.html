@@ -640,6 +640,7 @@ function renderReview(stations, H, wy){
 const NATURAL = [["11264500","Happy Isles"],["11266500","Pohono Bridge"],["11284400","Big Creek"]];
 let ensoSite = "11264500";
 function renderEnso(H, S){
+  const O = S.enso?.outlook;
   const ph = H.enso.phase || {}, djf = H.enso.djf || {};
   const site = H.stations[ensoSite]; if (!site) return;
   const years = Object.keys(site.annual).sort();
@@ -670,7 +671,7 @@ function renderEnso(H, S){
   const sMin = strong.reduce((a, b) => site.annual[b].pct_median < site.annual[a].pct_median ? b : a, strong[0]);
   const latest = H.enso.latest;
   document.getElementById("enso-prose").innerHTML = `
-    <p>NOAA issued an <b>El Niño Advisory</b> this summer. The Oceanic Niño Index reached <b>${latest ? (latest.oni > 0 ? "+" : "") + latest.oni : "—"}</b> for ${latest ? latest.season + " " + latest.year : ""}, and NOAA's September 10 outlook gave a better than 90% chance of a <b>very strong</b> event this winter.</p>
+    <p>The Oceanic Niño Index reached <b>${latest ? (latest.oni > 0 ? "+" : "") + latest.oni : "—"}</b> for ${latest ? latest.season + " " + latest.year : ""}.${O ? ` NOAA's latest outlook${O.issued ? `, issued ${esc(O.issued)}` : ""}: <b>${esc(O.status)}</b>. ${esc(O.synopsis)} <a href="${O.url}" target="_blank" style="color:#4AACBF">Read it ↗</a>` : ""}</p>
     <p>At ${esc(name)}, the strong and very strong El Niño winters since 1981 produced: ${list}. Their median is <b>${med(strong.map(y => site.annual[y].pct_median))}%</b> of a typical year, against ${med(nina.map(y => site.annual[y].pct_median))}% for La Niña years and ${med(neutral.map(y => site.annual[y].pct_median))}% for neutral ones.</p>
     <p>So the record leans wet, but not reliably. The wettest of those winters, <b>${sMax}</b>, ran ${site.annual[sMax].pct_median}% of normal; the driest, <b>${sMin}</b>, only ${site.annual[sMin].pct_median}%. The five biggest years here (${top.map(y => `${y} <span style="color:#C8A87A">${(ph[y] || "").replace(" El Niño", " Niño")}</span>`).join(", ")}) are not all El Niño years. The central Sierra sits near the hinge between the wetter south and the drier north that El Niño tends to bring.</p>
     <p style="font-size:11px;color:#C8A87A">Phase is the December–February ONI for each water year (≥2.0 very strong, 1.5–2.0 strong). Only gages with no dams above them are shown.</p>`;
@@ -725,9 +726,12 @@ async function init(){
     : `Water year ${S.water_year} runs October 1, ${startYr} to September 30, ${S.water_year}.`) +
     (hi ? ` Last year at Happy Isles: <b>${hi.pct_median}% of a median year</b>.` : "");
   const L = H.enso?.latest || S.enso?.latest;
+  const O = S.enso?.outlook;   // NOAA CPC's latest diagnostic discussion, fetched hourly
   document.getElementById("oni-val").textContent = L ? (L.oni > 0 ? "+" : "") + L.oni.toFixed(1) : "—";
   document.getElementById("enso-text").innerHTML = L
-    ? `${L.oni >= 0.5 ? "<b>El Niño conditions</b>" : L.oni <= -0.5 ? "<b>La Niña conditions</b>" : "ENSO-neutral"} in the ${L.season} ${L.year} Oceanic Niño Index. NOAA's September 10 outlook: a better than 90% chance of a very strong El Niño this winter. Big El Niños have brought the Sierra its floods, and also a dry year.`
+    ? `${L.oni >= 0.5 ? "<b>El Niño conditions</b>" : L.oni <= -0.5 ? "<b>La Niña conditions</b>" : "ENSO-neutral"} in the ${L.season} ${L.year} Oceanic Niño Index. ` +
+      (O ? `<b>${esc(O.status)}</b>${O.issued ? ` (NOAA, ${esc(O.issued)})` : ""}: ${esc(O.synopsis)} ` : "") +
+      `Big El Niños have brought the Sierra its floods, and also a dry year.`
     : "ENSO data unavailable.";
 
   // summary

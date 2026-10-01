@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   fetch-and-deploy:
@@ -43,3 +44,34 @@ jobs:
           git commit -m "data: update streamflow $(date -u '+%Y-%m-%dT%H:%MZ')"
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push
+
+      - name: Open a storm-watch issue (first storm of the water year)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY' > storm.txt
+          import json
+          d = json.load(open("data/processed/streamflow.json"))
+          for s in d.get("storm", []):
+              print(f"- **{s['short']}** ({s['id']}): {s['flow']} cfs, {s['d24h']:+} in 24 h, status {s['status']}")
+          print(f"WY={d['water_year']}")
+          PY
+          wy=$(grep '^WY=' storm.txt | cut -d= -f2)
+          if ! grep -q '^- ' storm.txt; then echo "No storm flagged"; exit 0; fi
+          title="Storm watch WY${wy}: first storm on the undammed gages"
+          if gh issue list --state all --search "in:title \"Storm watch WY${wy}\"" --json number --jq 'length' | grep -qv '^0$'; then
+            echo "Storm-watch issue for WY${wy} already exists"; exit 0
+          fi
+          {
+            echo "The hourly job flagged the first storm of water year ${wy} on gages with no dams above them:"
+            echo
+            grep '^- ' storm.txt
+            echo
+            echo "Worth a look at https://brooksgroves.com/sierra-streamflow/ while it's happening:"
+            echo "- Do Happy Isles and Big Creek get a sensible percentile label (above / much above normal)?"
+            echo "- Does the 7-day chart show the rise cleanly, and does the red water-year line climb out of the bands?"
+            echo "- Does the page still say \"quiet hour\" anywhere it shouldn't? (The job should be committing every hour during a storm.)"
+            echo
+            echo "_Opened automatically by the fetch workflow; it opens one of these per water year._"
+          } > body.md
+          gh issue create --title "$title" --body-file body.md

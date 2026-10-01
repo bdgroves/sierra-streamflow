@@ -69,7 +69,8 @@ API = "https://api.waterdata.usgs.gov/ogcapi/v0"
 LEGACY_IV = "https://waterservices.usgs.gov/nwis/iv/"
 LEGACY_DV = "https://waterservices.usgs.gov/nwis/dv/"
 ONI_URL = "https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt"
-API_KEY = os.environ.get("USGS_API_KEY", "")   # optional; raises the anonymous rate limit
+API_KEY = os.environ.get("USGS_API_KEY", "").strip()   # optional; raises the anonymous rate limit
+RATE = {}                                     # last X-RateLimit-* headers seen from the Water Data API
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "processed"
@@ -107,6 +108,10 @@ def get(url, params=None, raw=False, retries=3):
     for attempt in range(retries):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=60) as r:
+                if url.startswith(API):
+                    for h in ("X-RateLimit-Limit", "X-RateLimit-Remaining"):
+                        if r.headers.get(h):
+                            RATE[h] = r.headers.get(h)
                 body = r.read()
                 return body.decode() if raw else json.loads(body)
         except Exception:
@@ -471,7 +476,11 @@ def main():
         "generated_at_pt": fmt_dt(now_pt),
         "water_year": cur_wy, "wy_day": day_of_wy(today),
         "record": f"WY{RECORD_START.year + 1}–{last_complete}",
-        "health": {"stations_ok": ok, "stations": len(stations), "issues": health},
+        "health": {"stations_ok": ok, "stations": len(stations), "issues": health,
+                   # whether a USGS key was sent, and the hourly limit USGS reported back
+                   # (the key itself is never written anywhere)
+                   "api_key": bool(API_KEY), "rate_limit": RATE.get("X-RateLimit-Limit"),
+                   "rate_remaining": RATE.get("X-RateLimit-Remaining")},
         "enso": {"latest": oni_latest, "phase": enso_phase(oni_latest["oni"]) if oni_latest else None},
         "stations": stations,
     }

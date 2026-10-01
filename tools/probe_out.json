@@ -1,0 +1,388 @@
+{
+ "legacy_site": "#\n#\n# US Geological Survey\n# retrieved: 2026-10-01 12:11:43 -04:00\t(caas01)\n#\n# The Site File stores location and general information about groundwater,\n# surface water, and meteorological sites\n# for sites in USA.\n#\n# File-format description:  http://help.waterdata.usgs.gov/faq/about-tab-delimited-output\n# Automated-retrieval info: http://waterservices.usgs.gov/rest/Site-Service.html\n#\n# Contact:   gs-w_support_nwisweb@usgs.gov\n#\n# The following selected fields are included in this output:\n#\n#  agency_cd       -- Agency\n#  site_no         -- Site identification number\n#  station_nm      -- Site name\n#  site_tp_cd      -- Site type\n#  lat_va          -- DMS latitude\n#  long_va         -- DMS longitude\n#  dec_lat_va      -- Decimal latitude\n#  dec_long_va     -- Decimal longitude\n#  coord_meth_cd   -- Latitude-longitude method\n#  coord_acy_cd    -- Latitude-longitude accuracy\n#  coord_datum_cd  -- Latitude-longitude datum\n#  dec_coord_datum_cd -- Decimal Latitude-longitude datum\n#  district_cd     -- District code\n#  state_cd        -- State code\n#  county_cd       -- County code\n#  country_cd      -- Country code\n#  land_net_ds     -- Land net location description\n#  map_nm          -- Name of location map\n#  map_scale_fc    -- Scale of location map\n#  alt_va          -- Altitude of Gage/land surface\n#  alt_meth_cd     -- Method altitude determined\n#  alt_acy_va      -- Altitude accuracy\n#  alt_datum_cd    -- Altitude datum\n#  huc_cd          -- Hydrologic unit code\n#  basin_cd        -- Drainage basin code\n#  topo_cd         -- Topographic setting code\n#  instruments_cd  -- Flags for instruments at site\n#  construction_dt -- Date of first construction\n#  inventory_dt    -- Date site established or inventoried\n#  drain_area_va   -- Drainage area\n#  contrib_drain_area_va -- Contributing drainage area\n#  tz_cd           -- Time Zone abbreviation\n#  local_time_fg   -- Site honors Daylight Savings Time\n#  reliability_cd  -- Data reliability code\n#  gw_file_cd      -- Data-other GW files\n#  nat_aqfr_cd     -- National aquifer code\n#  aqfr_cd         -- Local aquifer code\n#  aqfr_type_cd    -- Local aquifer type code\n#  well_depth_va   -- Well depth\n#  hole_depth_va   -- Hole depth\n#  depth_src_cd    -- Source of depth data\n#  project_no      -- Project number\n#\nagency_cd\tsite_no\tstation_nm\tsite_tp_cd\tlat_va\tlong_va\tdec_lat_va\tdec_long_va\tcoord_meth_cd\tcoord_acy_cd\tcoord_datum_cd\tdec_coord_datum_cd\tdistrict_cd\tstate_cd\tcounty_cd\tcountry_cd\tland_net_ds\tmap_nm\tmap_scale_fc\talt_va\talt_meth_cd\talt_acy_va\talt_datum_cd\thuc_cd\tbasin_cd\ttopo_cd\tinstruments_cd\tconstruction_dt\tinventory_dt\tdrain_area_va\tcontrib_drain_area_va\ttz_cd\tlocal_time_fg\treliability_cd\tgw_file_cd\tnat_aqfr_cd\taqfr_cd\taqfr_type_cd\twell_depth_va\thole_depth_va\tdepth_src_cd\tproject_no\n5s\t15s\t50s\t7s\t16s\t16s\t16s\t16s\t1s\t1s\t10s\t10s\t3s\t2s\t3s\t2s\t23s\t20s\t7s\t8s\t1s\t3s\t10s\t16s\t2s\t1s\t30s\t8s\t8s\t8s\t8s\t6s\t1s\t1s\t30s\t10s\t8s\t1s\t8s\t8s\t1s\t12s\nUSGS\t11264500\tMERCED R A HAPPY ISLES BRIDGE NR YOSEMITE CA\tST\t374353\t1193329\t37.73130354\t-119.5590243\tM\tS\tNAD27\tNAD83\t06\t06\t043\tUS\t\tHALF DOME\t  24000\t4020.46\tX\t.16\tNAVD88\t18040008\t\t\tNNNNYNNNNNNNNNNNNNNNNNNNNNNNNN\t\t\t181\t\tPST\tY\t\tNNNNNNNN\t\t\t\t\t\t\tGC12ZG-00105\nUSGS\t11266500\tMERCED R A POHONO BRIDGE NR YOSEMITE CA\tST\t374258.60\t1193956.40\t37.71627778\t-119.6656667\tM\t5\tNAD83\tNAD83\t06\t06\t043\tUS\t\tEL CAPITAN, CA\t24000\t3864.88\tY\t.33\tNAVD88\t18040008\t\t\tNNNNYNNNNNNNNNNNNNNNNNNNNNNNNN\t\t\t321\t\tPST\tY\t\tNNNNNNNN\t\t\t\t\t\t\t\nUSGS\t11274790\tTUOLUMNE R A GRAND CYN OF TUOLUMNE AB HETCH HETCHY\tST\t375500\t1193932\t37.91657698\t-119.6598627\tM\tS\tNAD27\tNAD83\t06\t06\t109\tUS\t\tHETCH HETCHY RES\t  24000\t3813.65\tX\t.16\tNAVD88\t18040009\t\t\tNNNNYNNNNNNNNNNNNNNNNNNNNNNNNN\t\t\t301\t\tPST\tY\t\t\t\t\t\t\t\t\t967700105\nUSGS\t11276500\tTUOLUMNE R NR HETCH HETCHY CA\tST\t375615\t1194750\t37.93740877\t-119.7982\tM\tF\tNAD27\tNAD83\t06\t06\t109\tUS\t  SWSES17 T01N  R20E\tLAKE ELEANOR CA\t\t3452.21\tX\t.16\tNAVD88\t18040009\t\t\tNNNNYNNNNNNNNNNNNNNNNNNNNNNNNN\t\t\t457\t\tPST\tY\t\tNNNNNNNN\t\t\t\t\t\t\t\nUSGS\t11284400\tBIG C AB WHITES GULCH NR GROVELAND CA\tST\t375031\t1201102\t37.8418518\t-120.1848757\tM\tF\tNAD27\tNAD83\t06\t06\t109\tUS\t  SWNES23 T01S  R16E\t\t\t2567.82\tX\t.16\tNAVD88\t18040009\t\t\tNNNNYNNNNNNNNNNNNNNNNNNNNNNNNN\t\t\t16.4\t\tPST\tY\t\tNNNNNNNN\t\t\t\t\t\t\t\nUSGS\t11289650\tTUOLUMNE R BL LAGRANGE DAM NR LAGRANGE CA\tST\t373959\t1202628\t37.66629746\t-120.4421023\tM\tF\tNAD27\tNAD83\t06\t06\t099\tUS\t  NWNWS21 T03S  R14E\t\t\t172.60\tX\t.16\tNAVD88\t18040009\t\t\tNNNNYNNNNNNNNNNNNNNNNNNNNNNNNN\t\t\t1538\t\tPST\tY\t\tNNNNNNNN\t\t\t\t\t\t\t\nUSGS\t11290000\tTUOLUMNE R A MODESTO CA\tST\t373738\t1205900\t37.627153\t-120.9843777\tG\t1\tNAD27\tNAD83\t06\t06\t099\tUS\t  NWSES33 T03S  R09E\tRIVERBANK\t  24000\t2.46\tY\t.26\tNAVD88\t18040009\t\t\tNNNNYNNNNNNNNNNNNNNNNNNNNNNNNN\t\t\t1884\t\tPST\tY\t\tNNNNNNNN\t\t\t\t\t\t\t470648500\nUSGS\t11303000\tSTANISLAUS R A RIPON CA\tST\t374347\t1210634\t37.72962389\t-121.110454\tM\tS\tNAD27\tNAD83\t06\t06\t099\tUS\t  NWSES29 T02S  R08E\tSALIDA\t  24000\t2.83\tX\t.26\tNAVD88\t18040010\t\t\tNNNNYNNNNNNNNNNNNNNNNNNNNNNNNN\t\t\t1075\t\tPST\tY\t\tNNNNNNNN\t\t\t\t\t\t\t470648500\n",
+ "legacy_dv_range": "H HETCHY\tST\t37.91657698\t-119.6598627\tS\tNAD83\t3813.65\t.16\tNAVD88\t18040009\tdv\t63680\t00008\t261449\t[YSI EXO]\twat\t\t1640507\t0\t2020-02-29\t2022-10-03\t926\nUSGS\t11276500\tTUOLUMNE R NR HETCH HETCHY CA\tST\t37.93740877\t-119.7982\tF\tNAD83\t3452.21\t.16\tNAVD88\t18040009\tdv\t00010\t00001\t9637\t\twat\t\t1645597\t0\t1971-10-01\t2022-10-25\t12421\nUSGS\t11276500\tTUOLUMNE R NR HETCH HETCHY CA\tST\t37.93740877\t-119.7982\tF\tNAD83\t3452.21\t.16\tNAVD88\t18040009\tdv\t00010\t00002\t9638\t\twat\t\t1645597\t0\t1971-10-01\t2022-10-25\t12418\nUSGS\t11276500\tTUOLUMNE R NR HETCH HETCHY CA\tST\t37.93740877\t-119.7982\tF\tNAD83\t3452.21\t.16\tNAVD88\t18040009\tdv\t00010\t00003\t234303\t\twat\t\t1645597\t0\t2016-10-01\t2022-10-25\t1980\nUSGS\t11276500\tTUOLUMNE R NR HETCH HETCHY CA\tST\t37.93740877\t-119.7982\tF\tNAD83\t3452.21\t.16\tNAVD88\t18040009\tdv\t00060\t00003\t9640\t\twat\t\t1645423\t0\t1910-10-01\t2026-09-30\t42369\nUSGS\t11284400\tBIG C AB WHITES GULCH NR GROVELAND CA\tST\t37.8418518\t-120.1848757\tF\tNAD83\t2567.82\t.16\tNAVD88\t18040009\tdv\t00060\t00003\t327891\t\twat\t\t1645423\t0\t1969-05-01\t2026-09-30\t20972\nUSGS\t11289650\tTUOLUMNE R BL LAGRANGE DAM NR LAGRANGE CA\tST\t37.66629746\t-120.4421023\tF\tNAD83\t172.60\t.16\tNAVD88\t18040009\tdv\t00010\t00001\t9713\t\twat\t\t1645597\t0\t1970-11-10\t2023-02-10\t17135\nUSGS\t11289650\tTUOLUMNE R BL LAGRANGE DAM NR LAGRANGE CA\tST\t37.66629746\t-120.4421023\tF\tNAD83\t172.60\t.16\tNAVD88\t18040009\tdv\t00010\t00002\t9714\t\twat\t\t1645597\t0\t1970-11-10\t2023-02-10\t17130\nUSGS\t11289650\tTUOLUMNE R BL LAGRANGE DAM NR LAGRANGE CA\tST\t37.66629746\t-120.4421023\tF\tNAD83\t172.60\t.16\tNAVD88\t18040009\tdv\t00010\t00003\t234310\t\twat\t\t1645597\t0\t2016-10-01\t2023-02-10\t2288\nUSGS\t11289650\tTUOLUMNE R BL LAGRANGE DAM NR LAGRANGE CA\tST\t37.66629746\t-120.4421023\tF\tNAD83\t172.60\t.16\tNAVD88\t18040009\tdv\t00060\t00003\t9716\t\twat\t\t1645423\t0\t1970-10-01\t2026-09-30\t20454\nUSGS\t11290000\tTUOLUMNE R A MODESTO CA\tST\t37.627153\t-120.9843777\t1\tNAD83\t2.46\t.26\tNAVD88\t18040009\tdv\t00010\t00001\t9719\t\twat\t\t1645597\t0\t1965-07-21\t2023-01-09\t13362\nUSGS\t11290000\tTUOLUMNE R A MODESTO CA\tST\t37.627153\t-120.9843777\t1\tNAD83\t2.46\t.26\tNAVD88\t18040009\tdv\t00010\t00002\t9720\t\twat\t\t1645597\t0\t1965-07-21\t2023-01-09\t13350\nUSGS\t11290000\tTUOLUMNE R A MODESTO CA\tST\t37.627153\t-120.9843777\t1\tNAD83\t2.46\t.26\tNAVD88\t18040009\tdv\t00010\t00003\t234312\t\twat\t\t1645597\t0\t1971-07-28\t2023-06-06\t7521\nUSGS\t11290000\tTUOLUMNE R A MODESTO CA\tST\t37.627153\t-120.9843777\t1\tNAD83\t2.46\t.26\tNAVD88\t18040009\tdv\t00060\t00003\t9722\t\twat\t\t1645423\t0\t1895-01-01\t2026-09-30\t32325\nUSGS\t11290000\tTUOLUMNE R A MODESTO CA\tST\t37.627153\t-120.9843777\t1\tNAD83\t2.46\t.26\tNAVD88\t18040009\tdv\t00095\t00001\t9723\t\twat\t\t1646694\t0\t1988-12-24\t2023-06-07\t8652\nUSGS\t11290000\tTUOLUMNE R A MODESTO CA\tST\t37.627153\t-120.9843777\t1\tNAD83\t2.46\t.26\tNAVD88\t18040009\tdv\t00095\t00002\t9724\t\twat\t\t1646694\t0\t1988-12-24\t2022-11-08\t8660\nUSGS\t11290000\tTUOLUMNE R A MODESTO CA\tST\t37.627153\t-120.9843777\t1\tNAD83\t2.46\t.26\tNAVD88\t18040009\tdv\t00095\t00003\t234311\t\twat\t\t1646694\t0\t1988-12-24\t2022-11-08\t6632\nUSGS\t11303000\tSTANISLAUS R A RIPON CA\tST\t37.72962389\t-121.110454\tS\tNAD83\t2.83\t.26\tNAVD88\t18040010\tdv\t00010\t00001\t9830\t\twat\t\t1645597\t0\t1985-07-01\t2023-04-05\t11477\nUSGS\t11303000\tSTANISLAUS R A RIPON CA\tST\t37.72962389\t-121.110454\tS\tNAD83\t2.83\t.26\tNAVD88\t18040010\tdv\t00010\t00002\t9831\t\twat\t\t1645597\t0\t1985-07-01\t2023-04-05\t11474\nUSGS\t11303000\tSTANISLAUS R A RIPON CA\tST\t37.72962389\t-121.110454\tS\tNAD83\t2.83\t.26\tNAVD88\t18040010\tdv\t00010\t00003\t234315\t\twat\t\t1645597\t0\t1985-07-01\t2023-04-05\t4922\nUSGS\t11303000\tSTANISLAUS R A RIPON CA\tST\t37.72962389\t-121.110454\tS\tNAD83\t2.83\t.26\tNAVD88\t18040010\tdv\t00060\t00003\t9833\t\twat\t\t1645423\t0\t1940-10-01\t2026-09-30\t31411\nUSGS\t11303000\tSTANISLAUS R A RIPON CA\tST\t37.72962389\t-121.110454\tS\tNAD83\t2.83\t.26\tNAVD88\t18040010\tdv\t00095\t00001\t9834\t\twat\t\t1646694\t0\t1985-07-01\t2023-04-05\t10385\nUSGS\t11303000\tSTANISLAUS R A RIPON CA\tST\t37.72962389\t-121.110454\tS\tNAD83\t2.83\t.26\tNAVD88\t18040010\tdv\t00095\t00002\t9835\t\twat\t\t1646694\t0\t1985-07-01\t2023-04-05\t10411\nUSGS\t11303000\tSTANISLAUS R A RIPON CA\tST\t37.72962389\t-121.110454\tS\tNAD83\t2.83\t.26\tNAVD88\t18040010\tdv\t00095\t00003\t234316\t\twat\t\t1646694\t0\t1985-07-01\t2023-04-05\t3969\n",
+ "new_locations": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "properties": {
+     "id": "USGS-11264500",
+     "agency_code": "USGS",
+     "agency_name": "U.S. Geological Survey",
+     "monitoring_location_number": "11264500",
+     "monitoring_location_name": "MERCED R A HAPPY ISLES BRIDGE NR YOSEMITE CA",
+     "district_code": "06",
+     "country_code": "US",
+     "country_name": "United States of America",
+     "state_code": "06",
+     "state_name": "California",
+     "county_code": "043",
+     "county_name": "Mariposa County",
+     "minor_civil_division_code": null,
+     "site_type_code": "ST",
+     "site_type": "Stream",
+     "hydrologic_unit_code": "180400080108",
+     "basin_code": null,
+     "altitude": 4020.46,
+     "altitude_accuracy": 0.16,
+     "altitude_method_code": "X",
+     "altitude_method_name": "GNSS2 - Level 2 Quality Survey Grade Global Navigation Satellite System",
+     "vertical_datum": "NAVD88",
+     "vertical_datum_name": "North American Vertical Datum of 1988",
+     "horizontal_positional_accuracy_code": "S",
+     "horizontal_positional_accuracy": "Accurate to + or - 1 sec.",
+     "horizontal_position_method_code": "M",
+     "horizontal_position_method_name": "Interpolated from map",
+     "original_horizontal_datum": "NAD27",
+     "original_horizontal_datum_name": "North American Datum of 1927",
+     "drainage_area": 181.0,
+     "contributing_drainage_area": null,
+     "time_zone_abbreviation": "PST",
+     "uses_daylight_savings": "Y",
+     "construction_date": null,
+     "aquifer_code": null,
+     "national_aquifer_code": null,
+     "aquifer_type_code": null,
+     "well_constructed_depth": null,
+     "hole_constructed_depth": null,
+     "depth_source_code": null,
+     "revision_note": "WSP 1215: 1938 (instantaneous maximum discharge).",
+     "revision_created": "2017-11-13T06:00:00+00:00",
+     "revision_modified": null
+    },
+    "id": "USGS-11264500",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   }
+  ],
+  "numberReturned": 1,
+  "links": [
+   {
+    "type": "application/geo+json",
+    "rel": "self",
+    "title": "This document as GeoJSON",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?f=json&id=USGS-11264500"
+   },
+   {
+    "rel": "alternate",
+    "type": "application/ld+json",
+    "title": "This document as RDF (JSON-LD)",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?f=jsonld&id=USGS-11264500"
+   },
+   {
+    "type": "text/html",
+    "rel": "alternate",
+    "title": "This document as HTML",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?f=html&id=USGS-11264500"
+   },
+   {
+    "type": "text/csv; charset=utf-8",
+    "rel": "alternate",
+    "title": "This document as CSV",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations/items?f=csv&id=USGS-11264500"
+   },
+   {
+    "type": "application/json",
+    "title": "Monitoring locations",
+    "rel": "collection",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/monitoring-locations"
+   }
+  ],
+  "timeStamp": "2026-10-01T16:11:44.164976Z"
+ },
+ "new_daily": {
+  "n": 30,
+  "first": [
+   {
+    "type": "Feature",
+    "properties": {
+     "time_series_id": "4a3c5262421f4e139fcf84b5934f5402",
+     "monitoring_location_id": "USGS-11264500",
+     "parameter_code": "00060",
+     "statistic_id": "00003",
+     "time": "2026-09-13",
+     "value": "8.00",
+     "unit_of_measure": "ft^3/s",
+     "approval_status": "Provisional",
+     "qualifier": null,
+     "last_modified": "2026-09-14T10:05:47.681967+00:00"
+    },
+    "id": "115ef52e-d86c-4874-9ef5-88313fe5fe42",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   },
+   {
+    "type": "Feature",
+    "properties": {
+     "time_series_id": "4a3c5262421f4e139fcf84b5934f5402",
+     "monitoring_location_id": "USGS-11264500",
+     "parameter_code": "00060",
+     "statistic_id": "00003",
+     "time": "2026-09-22",
+     "value": "5.62",
+     "unit_of_measure": "ft^3/s",
+     "approval_status": "Provisional",
+     "qualifier": [
+      "ESTIMATED"
+     ],
+     "last_modified": "2026-09-26T02:38:01.583106+00:00"
+    },
+    "id": "1175cd4f-615b-487f-98ea-713045989dd0",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   }
+  ],
+  "links": [
+   {
+    "type": "application/geo+json",
+    "rel": "self",
+    "title": "This document as GeoJSON",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/daily/items?f=json&monitoring_location_id=USGS-11264500&parameter_code=00060&statistic_id=00003&time=2026-09-01%2F2026-09-30&limit=100"
+   },
+   {
+    "rel": "alternate",
+    "type": "application/ld+json",
+    "title": "This document as RDF (JSON-LD)",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/daily/items?f=jsonld&monitoring_location_id=USGS-11264500&parameter_code=00060&statistic_id=00003&time=2026-09-01%2F2026-09-30&limit=100"
+   },
+   {
+    "type": "text/html",
+    "rel": "alternate",
+    "title": "This document as HTML",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/daily/items?f=html&monitoring_location_id=USGS-11264500&parameter_code=00060&statistic_id=00003&time=2026-09-01%2F2026-09-30&limit=100"
+   },
+   {
+    "type": "text/csv; charset=utf-8",
+    "rel": "alternate",
+    "title": "This document as CSV",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/daily/items?f=csv&monitoring_location_id=USGS-11264500&parameter_code=00060&statistic_id=00003&time=2026-09-01%2F2026-09-30&limit=100"
+   },
+   {
+    "type": "application/json",
+    "title": "Daily values",
+    "rel": "collection",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/daily"
+   }
+  ],
+  "numberMatched": null
+ },
+ "new_continuous": {
+  "n": 94,
+  "first": [
+   {
+    "type": "Feature",
+    "properties": {
+     "time_series_id": "8da2bbba31f64d7d9a63a2bbcf6a44f5",
+     "monitoring_location_id": "USGS-11264500",
+     "parameter_code": "00060",
+     "statistic_id": "00011",
+     "time": "2026-09-30T16:15:00+00:00",
+     "value": "4.97",
+     "unit_of_measure": "ft^3/s",
+     "approval_status": "Provisional",
+     "qualifier": null,
+     "last_modified": "2026-09-30T16:43:21.356903+00:00",
+     "method_category": null
+    },
+    "id": "25b7ece0-ac13-4b3d-a45b-cf818dc64b19",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   },
+   {
+    "type": "Feature",
+    "properties": {
+     "time_series_id": "8da2bbba31f64d7d9a63a2bbcf6a44f5",
+     "monitoring_location_id": "USGS-11264500",
+     "parameter_code": "00060",
+     "statistic_id": "00011",
+     "time": "2026-09-30T16:30:00+00:00",
+     "value": "4.97",
+     "unit_of_measure": "ft^3/s",
+     "approval_status": "Provisional",
+     "qualifier": null,
+     "last_modified": "2026-09-30T16:43:21.356903+00:00",
+     "method_category": null
+    },
+    "id": "f9740f99-e19e-4305-8cdf-87e7813ea241",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   }
+  ],
+  "numberMatched": null
+ },
+ "new_latest": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "properties": {
+     "time_series_id": "8da2bbba31f64d7d9a63a2bbcf6a44f5",
+     "monitoring_location_id": "USGS-11264500",
+     "parameter_code": "00060",
+     "statistic_id": "00011",
+     "time": "2026-10-01T15:30:00+00:00",
+     "value": "4.77",
+     "unit_of_measure": "ft^3/s",
+     "approval_status": "Provisional",
+     "qualifier": null,
+     "last_modified": "2026-10-01T15:43:22.514493+00:00"
+    },
+    "id": "5b3abb7b-b75a-471a-8507-fc4ad8431208",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   },
+   {
+    "type": "Feature",
+    "properties": {
+     "time_series_id": "333b75622dc84da5a54a344a687d1dd9",
+     "monitoring_location_id": "USGS-11264500",
+     "parameter_code": "00065",
+     "statistic_id": "00011",
+     "time": "2026-10-01T15:30:00+00:00",
+     "value": "0.64",
+     "unit_of_measure": "ft",
+     "approval_status": "Provisional",
+     "qualifier": null,
+     "last_modified": "2026-10-01T15:43:18.030056+00:00"
+    },
+    "id": "9667d7a9-c0d9-4232-8614-940ffe89af76",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   },
+   {
+    "type": "Feature",
+    "properties": {
+     "time_series_id": "94a8c464510641d78c4e5e01f13874e8",
+     "monitoring_location_id": "USGS-11264500",
+     "parameter_code": "63160",
+     "statistic_id": "00011",
+     "time": "2026-10-01T15:30:00+00:00",
+     "value": "4021.10",
+     "unit_of_measure": "ft",
+     "approval_status": "Provisional",
+     "qualifier": null,
+     "last_modified": "2026-10-01T15:43:34.793190+00:00"
+    },
+    "id": "c4dbf64a-bc61-4284-b36d-e690ca9afb93",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   },
+   {
+    "type": "Feature",
+    "properties": {
+     "time_series_id": "d176ba9694844d3186cd4bbb539d7324",
+     "monitoring_location_id": "USGS-11264500",
+     "parameter_code": "00010",
+     "statistic_id": "00011",
+     "time": "2026-10-01T15:30:00+00:00",
+     "value": "10.4",
+     "unit_of_measure": "degC",
+     "approval_status": "Provisional",
+     "qualifier": null,
+     "last_modified": "2026-10-01T15:43:19.134629+00:00"
+    },
+    "id": "d61503ce-0d75-4596-b017-8d986d8a7f10",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -119.55902427621368,
+      37.73130354223962
+     ]
+    }
+   }
+  ],
+  "numberReturned": 4,
+  "links": [
+   {
+    "type": "application/geo+json",
+    "rel": "self",
+    "title": "This document as GeoJSON",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/latest-continuous/items?f=json&monitoring_location_id=USGS-11264500"
+   },
+   {
+    "rel": "alternate",
+    "type": "application/ld+json",
+    "title": "This document as RDF (JSON-LD)",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/latest-continuous/items?f=jsonld&monitoring_location_id=USGS-11264500"
+   },
+   {
+    "type": "text/html",
+    "rel": "alternate",
+    "title": "This document as HTML",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/latest-continuous/items?f=html&monitoring_location_id=USGS-11264500"
+   },
+   {
+    "type": "text/csv; charset=utf-8",
+    "rel": "alternate",
+    "title": "This document as CSV",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/latest-continuous/items?f=csv&monitoring_location_id=USGS-11264500"
+   },
+   {
+    "type": "application/json",
+    "title": "Latest continuous",
+    "rel": "collection",
+    "href": "https://api.waterdata.usgs.gov/ogcapi/v1/collections/latest-continuous"
+   }
+  ],
+  "timeStamp": "2026-10-01T16:11:44.887262Z"
+ },
+ "oni": "  JAS 2016  26.62  -0.34\n  ASO 2016  26.34  -0.42\n  SON 2016  26.20  -0.51\n  OND 2016  26.16  -0.49\n  NDJ 2016  26.19  -0.37\n  DJF 2017  26.47  -0.08\n  JFM 2017  26.86   0.08\n  FMA 2017  27.50   0.27\n  MAM 2017  27.95   0.32\n  AMJ 2017  28.15   0.35\n  MJJ 2017  27.94   0.32\n  JJA 2017  27.43   0.14\n  JAS 2017  26.89  -0.07\n  ASO 2017  26.54  -0.23\n  SON 2017  26.27  -0.44\n  OND 2017  26.04  -0.61\n  NDJ 2017  25.80  -0.76\n  DJF 2018  25.83  -0.71\n  JFM 2018  26.11  -0.67\n  FMA 2018  26.68  -0.55\n  MAM 2018  27.28  -0.35\n  AMJ 2018  27.72  -0.07\n  MJJ 2018  27.76   0.13\n  JJA 2018  27.49   0.20\n  JAS 2018  27.25   0.30\n  ASO 2018  27.28   0.52\n  SON 2018  27.53   0.82\n  OND 2018  27.69   1.04\n  NDJ 2018  27.61   1.05\n  DJF 2019  27.54   0.99\n  JFM 2019  27.72   0.94\n  FMA 2019  28.10   0.87\n  MAM 2019  28.45   0.82\n  AMJ 2019  28.50   0.71\n  MJJ 2019  28.21   0.59\n  JJA 2019  27.67   0.38\n  JAS 2019  27.16   0.20\n  ASO 2019  27.07   0.31\n  SON 2019  27.22   0.51\n  OND 2019  27.37   0.72\n  NDJ 2019  27.31   0.75\n  DJF 2020  27.25   0.71\n  JFM 2020  27.44   0.66\n  FMA 2020  27.80   0.57\n  MAM 2020  27.97   0.33\n  AMJ 2020  27.83   0.04\n  MJJ 2020  27.45  -0.18\n  JJA 2020  27.00  -0.29\n  JAS 2020  26.52  -0.43\n  ASO 2020  25.99  -0.77\n  SON 2020  25.71  -1.00\n  OND 2020  25.54  -1.11\n  NDJ 2020  25.50  -1.06\n  DJF 2021  25.55  -0.99\n  JFM 2021  25.92  -0.85\n  FMA 2021  26.48  -0.74\n  MAM 2021  27.07  -0.56\n  AMJ 2021  27.39  -0.40\n  MJJ 2021  27.31  -0.31\n  JJA 2021  26.95  -0.35\n  JAS 2021  26.49  -0.46\n  ASO 2021  26.13  -0.64\n  SON 2021  25.94  -0.77\n  OND 2021  25.74  -0.91\n  NDJ 2021  25.73  -0.83\n  DJF 2022  25.79  -0.76\n  JFM 2022  26.09  -0.68\n  FMA 2022  26.46  -0.77\n  MAM 2022  26.77  -0.86\n  AMJ 2022  26.96  -0.83\n  MJJ 2022  26.90  -0.73\n  JJA 2022  26.59  -0.70\n  JAS 2022  26.18  -0.78\n  ASO 2022  25.89  -0.87\n  SON 2022  25.82  -0.89\n  OND 2022  25.83  -0.82\n  NDJ 2022  25.86  -0.70\n  DJF 2023  26.00  -0.55\n  JFM 2023  26.45  -0.33\n  FMA 2023  27.12  -0.11\n  MAM 2023  27.82   0.19\n  AMJ 2023  28.25   0.46\n  MJJ 2023  28.36   0.73\n  JJA 2023  28.29   1.00\n  JAS 2023  28.21   1.25\n  ASO 2023  28.26   1.50\n  SON 2023  28.45   1.74\n  OND 2023  28.55   1.90\n  NDJ 2023  28.55   1.99\n  DJF 2024  28.38   1.84\n  JFM 2024  28.30   1.53\n  FMA 2024  28.40   1.18\n  MAM 2024  28.40   0.77\n  AMJ 2024  28.23   0.43\n  MJJ 2024  27.80   0.18\n  JJA 2024  27.35   0.06\n  JAS 2024  26.92  -0.04\n  ASO 2024  26.64  -0.12\n  SON 2024  26.52  -0.19\n  OND 2024  26.35  -0.29\n  NDJ 2024  26.13  -0.43\n  DJF 2025  26.09  -0.46\n  JFM 2025  26.56  -0.22\n  FMA 2025  27.15  -0.08\n  MAM 2025  27.65   0.02\n  AMJ 2025  27.76  -0.04\n  MJJ 2025  27.61  -0.02\n  JJA 2025  27.18  -0.11\n  JAS 2025  26.70  -0.26\n  ASO 2025  26.33  -0.43\n  SON 2025  26.14  -0.57\n  OND 2025  26.04  -0.61\n  NDJ 2025  25.96  -0.60\n  DJF 2026  26.15  -0.39\n  JFM 2026  26.57  -0.21\n  FMA 2026  27.34   0.11\n  MAM 2026  28.09   0.46\n  AMJ 2026  28.74   0.95\n  MJJ 2026  29.02   1.39\n  JJA 2026  29.09   1.80\n",
+ "legacy_dv_long": [
+  [
+   "11264500",
+   16801,
+   "1980-10-01T00:00:00.000"
+  ],
+  [
+   "11266500",
+   16801,
+   "1980-10-01T00:00:00.000"
+  ],
+  [
+   "11276500",
+   16801,
+   "1980-10-01T00:00:00.000"
+  ]
+ ]
+}

@@ -22,12 +22,15 @@ jobs:
           python-version: '3.12'
 
       - name: Fetch USGS data
+        env:
+          USGS_API_KEY: ${{ secrets.USGS_API_KEY }}   # optional; leave unset to use the anonymous limit
         run: python scripts/fetch.py
 
       - name: Check for data changes
         id: diff
         run: |
-          git diff --quiet data/processed/streamflow.json \
+          git add -N data/processed data/history
+          git diff --quiet data/processed data/history \
             && echo "changed=false" >> $GITHUB_OUTPUT \
             || echo "changed=true"  >> $GITHUB_OUTPUT
 
@@ -36,6 +39,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/processed/streamflow.json
+          git add data/processed data/history
           git commit -m "data: update streamflow $(date -u '+%Y-%m-%dT%H:%MZ')"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
           git push

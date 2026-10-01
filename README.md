@@ -125,6 +125,12 @@ Every hour (GitHub Actions)
 
 If a gage fails, its last good reading stays up, marked stale, and the footer says so.
 
+**Commits only when something happens.** In quiet weather the job rewrites the data at most every 3 hours (each write is a commit). It writes immediately when a gage changes status or moves more than 10%, when NOAA posts a new ENSO outlook, at the start of each day, and every hour during a storm.
+
+**NOAA's own words.** The El Niño card quotes the alert status and synopsis from NOAA CPC's latest [ENSO Diagnostic Discussion](https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml), read each run, so it changes when NOAA's monthly update does.
+
+**Storm watch.** The first time a gage with no dams above it jumps in a new water year, the workflow opens a GitHub issue ("Storm watch WY2027…") with a short checklist, once per water year.
+
 **USGS is retiring the old API.** The legacy WaterServices (`waterservices.usgs.gov`) are scheduled for decommissioning in the first quarter of 2027. The fetcher now uses the new [USGS Water Data APIs](https://api.waterdata.usgs.gov/) and keeps the legacy service only as a fallback. An optional free API key (`USGS_API_KEY` repository secret) raises the rate limit; it works without one.
 
 ### Run It Yourself
